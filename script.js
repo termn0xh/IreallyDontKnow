@@ -34,9 +34,18 @@ const player = {
     targetY: null
 };
 
+// Input
+const keys = {
+    ArrowUp: false,
+    ArrowDown: false,
+    ArrowLeft: false,
+    ArrowRight: false
+};
+
 // Enemies & Coins
 let enemies = [];
 let collectibles = [];
+let stalker = null;
 let enemySpawnTimer = 0;
 let enemySpawnRate = 2000;
 
@@ -50,6 +59,14 @@ function resize() {
 }
 window.addEventListener('resize', resize);
 resize();
+
+// Keyboard Input
+window.addEventListener('keydown', (e) => {
+    if (keys.hasOwnProperty(e.code)) keys[e.code] = true;
+});
+window.addEventListener('keyup', (e) => {
+    if (keys.hasOwnProperty(e.code)) keys[e.code] = false;
+});
 
 // Click/Touch Input
 function setTarget(e) {
@@ -91,6 +108,7 @@ function startGame() {
     boredom = 0;
     enemies = [];
     collectibles = [];
+    stalker = null;
     enemySpawnRate = 2000;
     enemySpawnTimer = 0;
 
@@ -108,6 +126,25 @@ function startGame() {
 
     lastTime = performance.now();
     requestAnimationFrame(gameLoop);
+}
+
+function spawnStalker() {
+    // Spawn far away
+    let x, y;
+    if (Math.random() < 0.5) {
+        x = Math.random() < 0.5 ? -50 : canvas.width + 50;
+        y = Math.random() * canvas.height;
+    } else {
+        x = Math.random() * canvas.width;
+        y = Math.random() < 0.5 ? -50 : canvas.height + 50;
+    }
+
+    stalker = {
+        x, y,
+        size: 30,
+        speed: 0.6, // Even slower (was 1.2)
+        color: '#ff0000'
+    };
 }
 
 function spawnEnemy() {
@@ -200,19 +237,34 @@ function gameLoop(timestamp) {
         spawnCollectible();
     }
 
-    // Player Movement (Move towards target)
+    // Player Movement (Hybrid: Keys override Click)
     let moving = false;
-    const dx = player.targetX - player.x;
-    const dy = player.targetY - player.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
+    let keyMove = false;
 
-    if (dist > 5) { // Threshold to stop jitter
+    if (keys.ArrowUp) { player.y -= player.speed; keyMove = true; }
+    if (keys.ArrowDown) { player.y += player.speed; keyMove = true; }
+    if (keys.ArrowLeft) { player.x -= player.speed; keyMove = true; }
+    if (keys.ArrowRight) { player.x += player.speed; keyMove = true; }
+
+    if (keyMove) {
         moving = true;
-        const moveX = (dx / dist) * player.speed;
-        const moveY = (dy / dist) * player.speed;
+        // Reset target so it doesn't snap back when keys are released
+        player.targetX = player.x;
+        player.targetY = player.y;
+    } else {
+        // Click-to-move logic
+        const dx = player.targetX - player.x;
+        const dy = player.targetY - player.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
 
-        player.x += moveX;
-        player.y += moveY;
+        if (dist > 5) {
+            moving = true;
+            const moveX = (dx / dist) * player.speed;
+            const moveY = (dy / dist) * player.speed;
+
+            player.x += moveX;
+            player.y += moveY;
+        }
     }
 
     player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
@@ -220,11 +272,11 @@ function gameLoop(timestamp) {
 
     // Meters Logic
     if (moving) {
-        effort += 30 * dt;
-        boredom -= 50 * dt;
+        effort += 15 * dt; // Was 30
+        boredom -= 25 * dt; // Was 50
     } else {
-        effort -= 10 * dt;
-        boredom += 15 * dt;
+        effort -= 5 * dt; // Was 10
+        boredom += 8 * dt; // Was 15
     }
 
     effort = Math.max(0, Math.min(100, effort));
@@ -280,6 +332,37 @@ function gameLoop(timestamp) {
             return gameOver("HIT BY RESPONSIBILITY");
         }
     });
+
+    // Stalker Logic
+    if (stalker) {
+        // Move towards player
+        const dx = player.x - stalker.x;
+        const dy = player.y - stalker.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist > 0) {
+            stalker.x += (dx / dist) * stalker.speed;
+            stalker.y += (dy / dist) * stalker.speed;
+        }
+
+        // Draw Stalker
+        ctx.beginPath();
+        ctx.arc(stalker.x, stalker.y, stalker.size / 2, 0, Math.PI * 2);
+        ctx.fillStyle = stalker.color;
+        ctx.fill();
+
+        // Draw Text
+        ctx.fillStyle = '#fff';
+        ctx.font = '10px "Press Start 2P"';
+        ctx.textAlign = 'center';
+        ctx.fillText("RESPONSIBILITY", stalker.x, stalker.y - 20);
+
+        if (checkCircleCollision(stalker, player)) {
+            return gameOver("CAUGHT BY RESPONSIBILITY");
+        }
+    } else if (score > 5 && !stalker) { // Spawn after 5 seconds
+        spawnStalker();
+    }
 
     requestAnimationFrame(gameLoop);
 }
