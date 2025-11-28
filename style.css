@@ -6,6 +6,8 @@ body {
     background-color: #2d3436;
     font-family: 'Press Start 2P', cursive;
     color: white;
+    touch-action: none;
+    /* Prevent double-tap zoom etc */
 }
 
 #game-container {
@@ -35,14 +37,15 @@ canvas {
 }
 
 #score-display {
-    font-size: 24px;
+    font-size: 16px;
+    /* Smaller for mobile */
     color: #ffeaa7;
     text-shadow: 2px 2px 0 #000;
     margin-bottom: 10px;
 }
 
 #high-score-display {
-    font-size: 14px;
+    font-size: 12px;
     color: #81ecec;
     text-shadow: 1px 1px 0 #000;
 }
@@ -51,17 +54,18 @@ canvas {
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 400px;
+    width: 150px;
+    /* Smaller for mobile */
 }
 
 .meter-container {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .meter-container label {
     display: block;
-    font-size: 14px;
-    margin-bottom: 8px;
+    font-size: 10px;
+    margin-bottom: 4px;
     color: #b2bec3;
     text-shadow: 1px 1px 0 #000;
     text-align: right;
@@ -69,9 +73,9 @@ canvas {
 
 .meter-bar {
     width: 100%;
-    height: 30px;
+    height: 15px;
     background-color: #636e72;
-    border: 3px solid #fff;
+    border: 2px solid #fff;
 }
 
 .fill {
@@ -96,10 +100,11 @@ canvas {
     transform: translate(-50%, -50%);
     text-align: center;
     background: rgba(0, 0, 0, 0.9);
-    padding: 40px;
+    padding: 20px;
     border: 4px solid #fff;
     pointer-events: auto;
-    min-width: 400px;
+    min-width: 280px;
+    z-index: 100;
 }
 
 .hidden {
@@ -108,16 +113,16 @@ canvas {
 
 h1 {
     color: #d63031;
-    font-size: 40px;
-    margin-bottom: 30px;
+    font-size: 24px;
+    margin-bottom: 20px;
     text-shadow: 4px 4px 0 #000;
 }
 
 p {
     line-height: 1.6;
     color: #dfe6e9;
-    font-size: 14px;
-    margin-bottom: 30px;
+    font-size: 12px;
+    margin-bottom: 20px;
 }
 
 button {
@@ -125,8 +130,8 @@ button {
     border: 4px solid #fff;
     color: #fff;
     font-family: 'Press Start 2P', cursive;
-    padding: 20px 40px;
-    font-size: 18px;
+    padding: 15px 20px;
+    font-size: 14px;
     cursor: pointer;
     transition: transform 0.1s;
 }
@@ -137,4 +142,64 @@ button:hover {
 
 button:active {
     transform: scale(0.95);
+}
+
+/* Mobile Controls */
+#mobile-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: auto;
+    display: none;
+    /* Hidden by default, shown via JS if mobile */
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.7;
+}
+
+.dpad-row {
+    display: flex;
+    gap: 10px;
+}
+
+.dpad-btn {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid #fff;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.dpad-btn:active {
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(0.95);
+}
+
+@media (min-width: 768px) {
+    #meters {
+        width: 300px;
+    }
+
+    #score-display {
+        font-size: 24px;
+    }
+
+    #mobile-controls {
+        /* Optional: Hide on desktop if desired, but keeping for testing */
+        /* display: none; */
+        left: 100px;
+        /* Move to corner on desktop */
+        bottom: 50px;
+        transform: none;
+    }
 }

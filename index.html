@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Don't Try: Endless</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -22,13 +22,13 @@
 
             <div id="meters">
                 <div class="meter-container">
-                    <label>EFFORT (Don't try hard)</label>
+                    <label>EFFORT</label>
                     <div class="meter-bar">
                         <div id="effort-fill" class="fill"></div>
                     </div>
                 </div>
                 <div class="meter-container">
-                    <label>BOREDOM (Do something)</label>
+                    <label>BOREDOM</label>
                     <div class="meter-bar">
                         <div id="boredom-fill" class="fill"></div>
                     </div>
@@ -43,10 +43,24 @@
 
             <div id="start-screen">
                 <h1>DON'T TRY</h1>
-                <p>Move with ARROW KEYS.</p>
+                <p>Move with ARROW KEYS or D-PAD.</p>
                 <p>Moving raises EFFORT. Standing still raises BOREDOM.</p>
                 <p>Avoid the Red Balls.</p>
                 <button id="start-btn">Start Wasting Time</button>
+            </div>
+
+            <!-- Mobile Controls -->
+            <div id="mobile-controls">
+                <div class="dpad-row">
+                    <button id="btn-up" class="dpad-btn">▲</button>
+                </div>
+                <div class="dpad-row">
+                    <button id="btn-left" class="dpad-btn">◀</button>
+                    <button id="btn-right" class="dpad-btn">▶</button>
+                </div>
+                <div class="dpad-row">
+                    <button id="btn-down" class="dpad-btn">▼</button>
+                </div>
             </div>
         </div>
     </div>

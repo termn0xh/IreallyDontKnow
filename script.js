@@ -14,6 +14,22 @@ const finalScore = document.getElementById('final-score');
 const startBtn = document.getElementById('start-btn');
 const restartBtn = document.getElementById('restart-btn');
 
+// Mobile Buttons
+const btnUp = document.getElementById('btn-up');
+const btnDown = document.getElementById('btn-down');
+const btnLeft = document.getElementById('btn-left');
+const btnRight = document.getElementById('btn-right');
+const mobileControls = document.getElementById('mobile-controls');
+
+// Mobile Detection
+function isMobileDevice() {
+    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1) || ('ontouchstart' in window);
+}
+
+if (isMobileDevice()) {
+    mobileControls.style.display = 'flex';
+}
+
 // Game State
 let isPlaying = false;
 let lastTime = 0;
@@ -44,7 +60,7 @@ const keys = {
 let enemies = [];
 let collectibles = [];
 let enemySpawnTimer = 0;
-let enemySpawnRate = 2000; // Start at 2s
+let enemySpawnRate = 2000;
 
 function resize() {
     canvas.width = window.innerWidth;
@@ -57,13 +73,30 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// Input Listeners
+// Keyboard Input
 window.addEventListener('keydown', (e) => {
     if (keys.hasOwnProperty(e.code)) keys[e.code] = true;
 });
 window.addEventListener('keyup', (e) => {
     if (keys.hasOwnProperty(e.code)) keys[e.code] = false;
 });
+
+// Touch Input Helper
+function addTouchListener(btn, key) {
+    const handleStart = (e) => { e.preventDefault(); keys[key] = true; };
+    const handleEnd = (e) => { e.preventDefault(); keys[key] = false; };
+
+    btn.addEventListener('mousedown', handleStart);
+    btn.addEventListener('mouseup', handleEnd);
+    btn.addEventListener('mouseleave', handleEnd);
+    btn.addEventListener('touchstart', handleStart);
+    btn.addEventListener('touchend', handleEnd);
+}
+
+addTouchListener(btnUp, 'ArrowUp');
+addTouchListener(btnDown, 'ArrowDown');
+addTouchListener(btnLeft, 'ArrowLeft');
+addTouchListener(btnRight, 'ArrowRight');
 
 startBtn.addEventListener('click', startGame);
 restartBtn.addEventListener('click', startGame);
@@ -89,7 +122,7 @@ function startGame() {
 
     coinDisplay.textContent = `Coins: ${coins}`;
 
-    spawnCollectible(); // Spawn first coin
+    spawnCollectible();
 
     lastTime = performance.now();
     requestAnimationFrame(gameLoop);
@@ -99,7 +132,6 @@ function spawnEnemy() {
     const size = 20 + Math.random() * 30;
     let x, y;
 
-    // Spawn from edges
     if (Math.random() < 0.5) {
         x = Math.random() < 0.5 ? -size : canvas.width + size;
         y = Math.random() * canvas.height;
@@ -109,7 +141,7 @@ function spawnEnemy() {
     }
 
     const angle = Math.atan2(player.y - y, player.x - x);
-    const speed = 3 + (score * 0.05); // Speed increases with score
+    const speed = 3 + (score * 0.05);
 
     enemies.push({
         x, y, size,
@@ -121,11 +153,9 @@ function spawnEnemy() {
 
 function spawnCollectible() {
     if (!isPlaying) return;
-    if (collectibles.length >= 3) return; // Max 3 coins at once
+    if (collectibles.length >= 3) return;
 
     const size = 15;
-    // Spawn near player logic from before, or just random on screen for endless
-    // Let's do random on screen but with padding
     const x = 50 + Math.random() * (canvas.width - 100);
     const y = 50 + Math.random() * (canvas.height - 100);
 
@@ -172,9 +202,7 @@ function gameLoop(timestamp) {
     score += dt;
     scoreDisplay.textContent = `Time Wasted: ${score.toFixed(1)}s`;
 
-    // Difficulty Ramp
     enemySpawnTimer += dt * 1000;
-    // Spawn rate decreases over time (faster spawns), cap at 200ms
     const currentSpawnRate = Math.max(200, 2000 - (score * 50));
 
     if (enemySpawnTimer > currentSpawnRate) {
@@ -182,12 +210,10 @@ function gameLoop(timestamp) {
         enemySpawnTimer = 0;
     }
 
-    // Spawn coins occasionally if low count
     if (collectibles.length < 3 && Math.random() < 0.01) {
         spawnCollectible();
     }
 
-    // Player Movement
     let moving = false;
     if (keys.ArrowUp) { player.y -= player.speed; moving = true; }
     if (keys.ArrowDown) { player.y += player.speed; moving = true; }
@@ -197,7 +223,6 @@ function gameLoop(timestamp) {
     player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
     player.y = Math.max(0, Math.min(canvas.height - player.size, player.y));
 
-    // Meters Logic
     if (moving) {
         effort += 30 * dt;
         boredom -= 50 * dt;
@@ -215,15 +240,12 @@ function gameLoop(timestamp) {
     if (effort >= 100) return gameOver("TRIED TOO HARD");
     if (boredom >= 100) return gameOver("DIED OF BOREDOM");
 
-    // Draw
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw Player
     ctx.fillStyle = player.color;
     ctx.fillRect(player.x, player.y, player.size, player.size);
 
-    // Draw & Check Collectibles
     collectibles.forEach((c, index) => {
         ctx.beginPath();
         ctx.arc(c.x, c.y, c.size / 2, 0, Math.PI * 2);
@@ -234,17 +256,14 @@ function gameLoop(timestamp) {
             collectibles.splice(index, 1);
             coins++;
             coinDisplay.textContent = `Coins: ${coins}`;
-            // Optional: Coins reduce boredom slightly?
             boredom = Math.max(0, boredom - 10);
         }
     });
 
-    // Draw Enemies
     enemies.forEach((enemy) => {
         enemy.x += enemy.vx;
         enemy.y += enemy.vy;
 
-        // Bounce off walls
         if (enemy.x < 0 || enemy.x > canvas.width) enemy.vx *= -1;
         if (enemy.y < 0 || enemy.y > canvas.height) enemy.vy *= -1;
 
