@@ -1,2 +1,56 @@
-<h1>What did u expect?</h1>
-<h2>https://t.me/termnh</h2>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Don't Try: Endless</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="ui-layer">
+            <div id="top-left">
+                <div id="score-display">Time Wasted: 0s</div>
+                <div id="coin-display"
+                    style="color: #fdcb6e; font-size: 18px; margin-bottom: 10px; text-shadow: 2px 2px 0 #000;">Coins: 0
+                </div>
+                <div id="high-score-display">Best: 0s</div>
+            </div>
+
+            <div id="meters">
+                <div class="meter-container">
+                    <label>EFFORT (Don't try hard)</label>
+                    <div class="meter-bar">
+                        <div id="effort-fill" class="fill"></div>
+                    </div>
+                </div>
+                <div class="meter-container">
+                    <label>BOREDOM (Do something)</label>
+                    <div class="meter-bar">
+                        <div id="boredom-fill" class="fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-over-screen" class="hidden">
+                <h1 id="death-reason">YOU TRIED</h1>
+                <p>You wasted <span id="final-score">0</span> seconds.</p>
+                <button id="restart-btn">Try Again</button>
+            </div>
+
+            <div id="start-screen">
+                <h1>DON'T TRY</h1>
+                <p>Move with ARROW KEYS.</p>
+                <p>Moving raises EFFORT. Standing still raises BOREDOM.</p>
+                <p>Avoid the Red Balls.</p>
+                <button id="start-btn">Start Wasting Time</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
