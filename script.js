@@ -91,6 +91,7 @@ function addTouchListener(btn, key) {
     btn.addEventListener('mouseleave', handleEnd);
     btn.addEventListener('touchstart', handleStart);
     btn.addEventListener('touchend', handleEnd);
+    btn.addEventListener('touchcancel', handleEnd); // Handle interruptions
 }
 
 addTouchListener(btnUp, 'ArrowUp');
@@ -202,11 +203,15 @@ function gameLoop(timestamp) {
     score += dt;
     scoreDisplay.textContent = `Time Wasted: ${score.toFixed(1)}s`;
 
+    // Difficulty Ramp
     enemySpawnTimer += dt * 1000;
-    const currentSpawnRate = Math.max(200, 2000 - (score * 50));
+    // Spawn rate decreases slower: 2000ms start, -5ms per second. Min 500ms.
+    const currentSpawnRate = Math.max(500, 2000 - (score * 10));
 
     if (enemySpawnTimer > currentSpawnRate) {
-        spawnEnemy();
+        if (enemies.length < 50) { // Cap max enemies to prevent lag/chaos
+            spawnEnemy();
+        }
         enemySpawnTimer = 0;
     }
 
