@@ -144,47 +144,6 @@ button:active {
     transform: scale(0.95);
 }
 
-/* Mobile Controls */
-#mobile-controls {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    pointer-events: auto;
-    display: none;
-    /* Hidden by default, shown via JS if mobile */
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    opacity: 0.7;
-}
-
-.dpad-row {
-    display: flex;
-    gap: 10px;
-}
-
-.dpad-btn {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid #fff;
-    border-radius: 10px;
-    color: #fff;
-    font-size: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-}
-
-.dpad-btn:active {
-    background: rgba(255, 255, 255, 0.5);
-    transform: scale(0.95);
-}
-
 @media (min-width: 768px) {
     #meters {
         width: 300px;
@@ -192,14 +151,5 @@ button:active {
 
     #score-display {
         font-size: 24px;
-    }
-
-    #mobile-controls {
-        /* Optional: Hide on desktop if desired, but keeping for testing */
-        /* display: none; */
-        left: 100px;
-        /* Move to corner on desktop */
-        bottom: 50px;
-        transform: none;
     }
 }

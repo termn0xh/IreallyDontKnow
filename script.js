@@ -14,22 +14,6 @@ const finalScore = document.getElementById('final-score');
 const startBtn = document.getElementById('start-btn');
 const restartBtn = document.getElementById('restart-btn');
 
-// Mobile Buttons
-const btnUp = document.getElementById('btn-up');
-const btnDown = document.getElementById('btn-down');
-const btnLeft = document.getElementById('btn-left');
-const btnRight = document.getElementById('btn-right');
-const mobileControls = document.getElementById('mobile-controls');
-
-// Mobile Detection
-function isMobileDevice() {
-    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1) || ('ontouchstart' in window);
-}
-
-if (isMobileDevice()) {
-    mobileControls.style.display = 'flex';
-}
-
 // Game State
 let isPlaying = false;
 let lastTime = 0;
@@ -45,15 +29,9 @@ const player = {
     y: 0,
     size: 25,
     speed: 5,
-    color: '#00b894'
-};
-
-// Input
-const keys = {
-    ArrowUp: false,
-    ArrowDown: false,
-    ArrowLeft: false,
-    ArrowRight: false
+    color: '#00b894',
+    targetX: null,
+    targetY: null
 };
 
 // Enemies & Coins
@@ -73,31 +51,32 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// Keyboard Input
-window.addEventListener('keydown', (e) => {
-    if (keys.hasOwnProperty(e.code)) keys[e.code] = true;
-});
-window.addEventListener('keyup', (e) => {
-    if (keys.hasOwnProperty(e.code)) keys[e.code] = false;
-});
+// Click/Touch Input
+function setTarget(e) {
+    if (!isPlaying) return;
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-// Touch Input Helper
-function addTouchListener(btn, key) {
-    const handleStart = (e) => { e.preventDefault(); keys[key] = true; };
-    const handleEnd = (e) => { e.preventDefault(); keys[key] = false; };
-
-    btn.addEventListener('mousedown', handleStart);
-    btn.addEventListener('mouseup', handleEnd);
-    btn.addEventListener('mouseleave', handleEnd);
-    btn.addEventListener('touchstart', handleStart);
-    btn.addEventListener('touchend', handleEnd);
-    btn.addEventListener('touchcancel', handleEnd); // Handle interruptions
+    player.targetX = clientX - rect.left - player.size / 2;
+    player.targetY = clientY - rect.top - player.size / 2;
 }
 
-addTouchListener(btnUp, 'ArrowUp');
-addTouchListener(btnDown, 'ArrowDown');
-addTouchListener(btnLeft, 'ArrowLeft');
-addTouchListener(btnRight, 'ArrowRight');
+canvas.addEventListener('mousedown', setTarget);
+canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // Prevent scrolling
+    setTarget(e);
+}, { passive: false });
+
+// Dragging support
+canvas.addEventListener('mousemove', (e) => {
+    if (e.buttons === 1) setTarget(e);
+});
+canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    setTarget(e);
+}, { passive: false });
+
 
 startBtn.addEventListener('click', startGame);
 restartBtn.addEventListener('click', startGame);
@@ -117,6 +96,8 @@ function startGame() {
 
     player.x = canvas.width / 2 - player.size / 2;
     player.y = canvas.height / 2 - player.size / 2;
+    player.targetX = player.x;
+    player.targetY = player.y;
 
     startScreen.classList.add('hidden');
     gameOverScreen.classList.add('hidden');
@@ -219,15 +200,25 @@ function gameLoop(timestamp) {
         spawnCollectible();
     }
 
+    // Player Movement (Move towards target)
     let moving = false;
-    if (keys.ArrowUp) { player.y -= player.speed; moving = true; }
-    if (keys.ArrowDown) { player.y += player.speed; moving = true; }
-    if (keys.ArrowLeft) { player.x -= player.speed; moving = true; }
-    if (keys.ArrowRight) { player.x += player.speed; moving = true; }
+    const dx = player.targetX - player.x;
+    const dy = player.targetY - player.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist > 5) { // Threshold to stop jitter
+        moving = true;
+        const moveX = (dx / dist) * player.speed;
+        const moveY = (dy / dist) * player.speed;
+
+        player.x += moveX;
+        player.y += moveY;
+    }
 
     player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
     player.y = Math.max(0, Math.min(canvas.height - player.size, player.y));
 
+    // Meters Logic
     if (moving) {
         effort += 30 * dt;
         boredom -= 50 * dt;
@@ -247,6 +238,14 @@ function gameLoop(timestamp) {
 
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw Target Marker (Optional, for feedback)
+    if (moving) {
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.beginPath();
+        ctx.arc(player.targetX + player.size / 2, player.targetY + player.size / 2, 10, 0, Math.PI * 2);
+        ctx.stroke();
+    }
 
     ctx.fillStyle = player.color;
     ctx.fillRect(player.x, player.y, player.size, player.size);
