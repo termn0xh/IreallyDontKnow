@@ -356,6 +356,9 @@ function gameLoop(timestamp) {
             stalker.y += (dy / dist) * stalker.speed;
         }
 
+        // Grow Stalker
+        stalker.size += 5 * dt;
+
         // Draw Stalker
         ctx.beginPath();
         ctx.arc(stalker.x, stalker.y, stalker.size / 2, 0, Math.PI * 2);
