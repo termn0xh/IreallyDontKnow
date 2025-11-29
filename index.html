@@ -12,41 +12,51 @@
     <div id="game-container">
         <canvas id="gameCanvas"></canvas>
         <div id="ui-layer">
-            <div id="top-left">
-                <div id="score-display">Time Wasted: 0s</div>
-                <div id="coin-display"
-                    style="color: #fdcb6e; font-size: 18px; margin-bottom: 10px; text-shadow: 2px 2px 0 #000;">Coins: 0
+            <div id="game-ui" class="hidden">
+                <div id="top-left">
+                    <div id="score-display">Time Wasted: 0s</div>
+                    <div id="coin-display"
+                        style="color: #fdcb6e; font-size: 18px; margin-bottom: 10px; text-shadow: 2px 2px 0 #000;">
+                        Coins: 0</div>
+                    <div id="high-score-display">Best: 0s</div>
                 </div>
-                <div id="high-score-display">Best: 0s</div>
-            </div>
 
-            <div id="meters">
-                <div class="meter-container">
-                    <label>EFFORT</label>
-                    <div class="meter-bar">
-                        <div id="effort-fill" class="fill"></div>
+                <div id="meters">
+                    <div class="meter-container">
+                        <label>EFFORT</label>
+                        <div class="meter-bar">
+                            <div id="effort-fill" class="fill"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="meter-container">
-                    <label>BOREDOM</label>
-                    <div class="meter-bar">
-                        <div id="boredom-fill" class="fill"></div>
+                    <div class="meter-container">
+                        <label>BOREDOM</label>
+                        <div class="meter-bar">
+                            <div id="boredom-fill" class="fill"></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div id="game-over-screen" class="hidden">
-                <h1 id="death-reason">YOU TRIED</h1>
+                <h1 id="death-reason">YOU TRIED TOO HARD</h1>
                 <p>You wasted <span id="final-score">0</span> seconds.</p>
-                <button id="restart-btn">Try Again</button>
+                <div class="button-row">
+                    <button id="restart-btn">Waste More time</button>
+                    <button id="menu-btn">Main Menu</button>
+                </div>
             </div>
 
-            <div id="start-screen">
-                <h1>DON'T TRY</h1>
-                <p>CLICK or TAP to Move.</p>
-                <p>Moving raises EFFORT. Standing still raises BOREDOM.</p>
-                <p>Avoid the Red Balls.</p>
-                <button id="start-btn">Start Wasting Time</button>
+            <div id="main-menu">
+                <h1 class="title">DON'T TRY</h1>
+                <p class="subtitle">The Game About Doing Nothing</p>
+                <div class="instructions">
+                    <p>TAP, or ARROWS to Move</p>
+                    <p>Moving raises EFFORT</p>
+                    <p>Standing still raises BOREDOM</p>
+                    <p>Avoid Responsibilities</p>
+                </div>
+                <button id="start-btn" class="big-btn">PLAY</button>
+                <div class="credits">by termnh</div>
             </div>
         </div>
     </div>

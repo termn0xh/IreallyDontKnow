@@ -7,12 +7,14 @@ const boredomFill = document.getElementById('boredom-fill');
 const scoreDisplay = document.getElementById('score-display');
 const coinDisplay = document.getElementById('coin-display');
 const highScoreDisplay = document.getElementById('high-score-display');
-const startScreen = document.getElementById('start-screen');
+const mainMenu = document.getElementById('main-menu');
+const gameUi = document.getElementById('game-ui');
 const gameOverScreen = document.getElementById('game-over-screen');
 const deathReason = document.getElementById('death-reason');
 const finalScore = document.getElementById('final-score');
 const startBtn = document.getElementById('start-btn');
 const restartBtn = document.getElementById('restart-btn');
+const menuBtn = document.getElementById('menu-btn');
 
 // Game State
 let isPlaying = false;
@@ -97,8 +99,16 @@ canvas.addEventListener('touchmove', (e) => {
 
 startBtn.addEventListener('click', startGame);
 restartBtn.addEventListener('click', startGame);
+menuBtn.addEventListener('click', showMainMenu);
 
 highScoreDisplay.textContent = `Best: ${highScore.toFixed(1)}s`;
+
+function showMainMenu() {
+    isPlaying = false;
+    mainMenu.classList.remove('hidden');
+    gameOverScreen.classList.add('hidden');
+    gameUi.classList.add('hidden');
+}
 
 function startGame() {
     isPlaying = true;
@@ -117,8 +127,9 @@ function startGame() {
     player.targetX = player.x;
     player.targetY = player.y;
 
-    startScreen.classList.add('hidden');
+    mainMenu.classList.add('hidden');
     gameOverScreen.classList.add('hidden');
+    gameUi.classList.remove('hidden');
 
     coinDisplay.textContent = `Coins: ${coins}`;
 
@@ -141,7 +152,7 @@ function spawnStalker() {
 
     stalker = {
         x, y,
-        size: 30,
+        size: 25,
         speed: 0.6, // Even slower (was 1.2)
         color: '#ff0000'
     };
