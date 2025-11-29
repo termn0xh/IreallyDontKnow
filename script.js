@@ -372,7 +372,7 @@ function gameLoop(timestamp) {
         ctx.fillText("RESPONSIBILITY", stalker.x, stalker.y - 20);
 
         if (checkCircleCollision(stalker, player)) {
-            return gameOver("CAUGHT BY RESPONSIBILITY");
+            return gameOver("U CAN'T RUN FOREVER FROM RESPONSIBILITY");
         }
     } else if (score > 5 && !stalker) { // Spawn after 5 seconds
         spawnStalker();
