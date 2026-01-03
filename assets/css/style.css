@@ -1,36 +1,15 @@
-/* ========================================
-   termnh.com — Desktop/Window Manager UI
-   ======================================== */
+/* termnh.com - Simple Desktop UI */
 
 :root {
-    /* Colors */
-    --bg-desktop: #1a1a2e;
-    --bg-window: #16213e;
-    --bg-titlebar: #0f3460;
-    --bg-icon: rgba(255, 255, 255, 0.08);
-    --bg-icon-hover: rgba(255, 255, 255, 0.15);
-
-    --text-primary: #eaeaea;
-    --text-secondary: #a0a0b0;
-    --text-muted: #6a6a7a;
-
+    --bg: #1a1a2e;
+    --bg-window: #1e1e32;
+    --bg-titlebar: #2a2a42;
+    --text: #e8e8e8;
+    --text-muted: #888;
     --accent: #e94560;
-    --accent-soft: rgba(233, 69, 96, 0.2);
-
-    --border-window: rgba(255, 255, 255, 0.1);
-    --shadow-window: 0 8px 32px rgba(0, 0, 0, 0.4);
-
-    /* Typography */
-    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
-
-    /* Sizing */
-    --titlebar-height: 36px;
-    --icon-size: 72px;
-    --window-radius: 12px;
+    --border: rgba(255, 255, 255, 0.1);
 }
 
-/* Reset */
 *,
 *::before,
 *::after {
@@ -46,53 +25,46 @@ body {
 }
 
 body {
-    font-family: var(--font-main);
-    background: var(--bg-desktop);
-    background-image:
-        radial-gradient(ellipse at top, #1a1a3e 0%, transparent 50%),
-        radial-gradient(ellipse at bottom right, #2a1a3e 0%, transparent 50%);
-    color: var(--text-primary);
-    -webkit-font-smoothing: antialiased;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.5;
 }
 
-/* Desktop Grid */
+/* Desktop */
 .desktop {
     height: 100vh;
     padding: 24px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, var(--icon-size));
-    grid-template-rows: repeat(auto-fill, calc(var(--icon-size) + 24px));
+    grid-template-columns: repeat(auto-fill, 80px);
     gap: 16px;
     align-content: start;
 }
 
-/* Desktop Icons */
+/* Icons */
 .icon {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
     padding: 12px 8px;
+    background: transparent;
+    border: 2px solid transparent;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.15s ease;
-    border: 2px solid transparent;
-    text-decoration: none;
-    color: inherit;
+    color: var(--text);
+    font-family: inherit;
+    transition: background 0.15s;
 }
 
 .icon:hover {
-    background: var(--bg-icon-hover);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .icon:focus {
     outline: none;
     border-color: var(--accent);
-    background: var(--bg-icon);
-}
-
-.icon:active {
-    transform: scale(0.95);
 }
 
 .icon-img {
@@ -101,19 +73,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
-    background: var(--bg-icon);
+    font-size: 28px;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .icon-label {
     font-size: 11px;
     text-align: center;
-    color: var(--text-primary);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    max-width: 72px;
-    word-wrap: break-word;
 }
 
 /* Windows */
@@ -122,81 +89,51 @@ body {
     display: none;
     flex-direction: column;
     background: var(--bg-window);
-    border: 1px solid var(--border-window);
-    border-radius: var(--window-radius);
-    box-shadow: var(--shadow-window);
-    min-width: 320px;
-    max-width: 90vw;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    min-width: 300px;
+    max-width: 400px;
     max-height: 80vh;
     z-index: 100;
-    overflow: hidden;
 }
 
 .window.open {
     display: flex;
-    animation: windowOpen 0.2s ease-out;
 }
 
-.window.closing {
-    animation: windowClose 0.15s ease-in forwards;
-}
-
-@keyframes windowOpen {
-    from {
-        opacity: 0;
-        transform: scale(0.9) translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
-@keyframes windowClose {
-    to {
-        opacity: 0;
-        transform: scale(0.95) translateY(5px);
-    }
-}
-
-/* Title Bar */
+/* Titlebar */
 .window-titlebar {
     display: flex;
     align-items: center;
-    height: var(--titlebar-height);
+    height: 36px;
     padding: 0 12px;
     background: var(--bg-titlebar);
+    border-radius: 8px 8px 0 0;
     cursor: grab;
     user-select: none;
-    flex-shrink: 0;
-}
-
-.window-titlebar:active {
-    cursor: grabbing;
 }
 
 .window-title {
     flex: 1;
     font-size: 13px;
     font-weight: 500;
-    color: var(--text-secondary);
-}
-
-.window-controls {
-    display: flex;
-    gap: 8px;
+    color: var(--text-muted);
 }
 
 .window-close {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
+    width: 24px;
+    height: 24px;
     border: none;
     background: var(--accent);
+    color: white;
+    border-radius: 4px;
     cursor: pointer;
-    transition: opacity 0.15s;
-    padding: 0;
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .window-close:hover {
@@ -208,129 +145,24 @@ body {
     outline-offset: 2px;
 }
 
-/* Window Content */
+/* Content */
 .window-content {
     padding: 20px;
     overflow-y: auto;
-    flex: 1;
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--text-secondary);
-}
-
-.window-content h2 {
-    font-size: 18px;
-    color: var(--text-primary);
-    margin-bottom: 12px;
 }
 
 .window-content p {
-    margin-bottom: 12px;
-}
-
-.window-content ul {
-    list-style: none;
-    margin-bottom: 16px;
-}
-
-.window-content li {
-    padding: 8px 0;
-    padding-left: 20px;
-    position: relative;
-    border-bottom: 1px solid var(--border-window);
-}
-
-.window-content li:last-child {
-    border-bottom: none;
-}
-
-.window-content li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
+    margin-bottom: 8px;
 }
 
 .window-content a {
     color: var(--accent);
-    text-decoration: none;
-    transition: opacity 0.15s;
-}
-
-.window-content a:hover {
-    opacity: 0.8;
-}
-
-.window-content a:focus {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-}
-
-/* Links List */
-.links-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.link-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
-    color: var(--text-primary);
-    text-decoration: none;
-    transition: background 0.15s;
-}
-
-.link-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.link-item:focus {
-    outline: 2px solid var(--accent);
-    outline-offset: -2px;
-}
-
-.link-icon {
-    font-size: 20px;
-}
-
-/* Playground Items */
-.playground-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px;
-    background: var(--accent-soft);
-    border: 1px solid var(--accent);
-    border-radius: 8px;
-    color: var(--text-primary);
-    text-decoration: none;
-    transition: transform 0.15s, box-shadow 0.15s;
-}
-
-.playground-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(233, 69, 96, 0.3);
-}
-
-.playground-item:focus {
-    outline: 2px solid white;
-    outline-offset: 2px;
-}
-
-.playground-item .emoji {
-    font-size: 24px;
 }
 
 .meta-text {
-    font-size: 12px;
     color: var(--text-muted);
-    margin-top: 16px;
-    font-family: var(--font-mono);
+    font-size: 13px;
+    margin-top: 12px;
 }
 
 /* Overlay */
@@ -349,21 +181,15 @@ body {
     pointer-events: auto;
 }
 
-/* Mobile Styles */
+/* Mobile */
 @media (max-width: 640px) {
     .desktop {
         padding: 16px;
-        gap: 12px;
         grid-template-columns: repeat(4, 1fr);
         justify-items: center;
     }
 
-    .icon {
-        width: 100%;
-    }
-
     .window {
-        position: fixed;
         top: 0 !important;
         left: 0 !important;
         right: 0;
@@ -373,63 +199,33 @@ body {
         max-width: 100%;
         max-height: 100%;
         border-radius: 0;
+        transform: none !important;
         z-index: 200;
-    }
-
-    .window.open {
-        animation: mobileWindowOpen 0.25s ease-out;
-    }
-
-    .window.closing {
-        animation: mobileWindowClose 0.2s ease-in forwards;
-    }
-
-    @keyframes mobileWindowOpen {
-        from {
-            opacity: 0;
-            transform: translateY(100%);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes mobileWindowClose {
-        to {
-            opacity: 0;
-            transform: translateY(100%);
-        }
     }
 
     .window-titlebar {
         cursor: default;
+        border-radius: 0;
     }
 
     .window-close {
-        width: 20px;
-        height: 20px;
-    }
-
-    .window-content {
-        padding: 24px 20px;
+        width: 32px;
+        height: 32px;
+        font-size: 20px;
     }
 }
 
-/* Reduced Motion */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
 
     *,
     *::before,
     *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+        transition: none !important;
     }
 }
 
-/* Skip Link */
+/* Skip link */
 .skip-link {
     position: absolute;
     top: -100%;
@@ -438,37 +234,10 @@ body {
     color: white;
     padding: 8px 16px;
     border-radius: 4px;
-    z-index: 1000;
     text-decoration: none;
+    z-index: 1000;
 }
 
 .skip-link:focus {
     top: 16px;
-}
-
-/* Taskbar (subtle branding) */
-.taskbar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 40px;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: var(--text-muted);
-    font-family: var(--font-mono);
-    z-index: 10;
-}
-
-.taskbar a {
-    color: var(--text-muted);
-    text-decoration: none;
-}
-
-.taskbar a:hover {
-    color: var(--text-secondary);
 }

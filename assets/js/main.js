@@ -1,41 +1,39 @@
 /**
- * termnh.com — Desktop Window Manager
- * Handles window dragging, opening/closing, keyboard navigation, and focus trapping
+ * termnh.com Desktop UI
+ * Simple window manager - click icons to open panels
  */
 
 (function () {
     'use strict';
 
-    // State
     let activeWindow = null;
     let isDragging = false;
+    let dragStart = { x: 0, y: 0 };
     let dragOffset = { x: 0, y: 0 };
+    let hasMoved = false;
     let windowZIndex = 100;
 
-    // DOM Elements
-    const overlay = document.getElementById('overlay');
-    const windows = document.querySelectorAll('.window');
-    const icons = document.querySelectorAll('.icon[data-window]');
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', init);
+    // Wait for DOM
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 
     function init() {
-        // Icon clicks
-        icons.forEach(icon => {
-            icon.addEventListener('click', (e) => {
-                e.preventDefault();
-                const windowId = icon.dataset.window;
-                openWindow(windowId);
-            });
+        // Query elements AFTER DOM is ready
+        const overlay = document.getElementById('overlay');
+        const windows = document.querySelectorAll('.window');
+        const icons = document.querySelectorAll('.icon[data-window]');
 
-            icon.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    const windowId = icon.dataset.window;
-                    openWindow(windowId);
-                }
-            });
+        // Debug
+        console.log('Desktop UI: Found', icons.length, 'icons and', windows.length, 'windows');
+
+        // Icon clicks and keyboard
+        icons.forEach(icon => {
+            icon.addEventListener('click', handleIconClick);
+            icon.addEventListener('touchend', handleIconTouch);
+            icon.addEventListener('keydown', handleIconKeydown);
         });
 
         // Window controls
@@ -43,23 +41,53 @@
             const titlebar = win.querySelector('.window-titlebar');
             const closeBtn = win.querySelector('.window-close');
 
-            // Close button
-            closeBtn.addEventListener('click', () => closeWindow(win));
+            if (closeBtn) {
+                closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    closeWindow(win, icons);
+                });
+            }
 
-            // Dragging (desktop only)
-            if (!isMobile()) {
+            // Dragging on desktop (titlebar only)
+            if (titlebar && !isMobile()) {
                 titlebar.addEventListener('mousedown', (e) => startDrag(e, win));
             }
 
-            // Bring to front on click
+            // Click inside window brings to front
             win.addEventListener('mousedown', () => bringToFront(win));
         });
 
-        // Global listeners
+        // Global events
         document.addEventListener('mousemove', onDrag);
-        document.addEventListener('mouseup', endDrag);
-        document.addEventListener('keydown', handleGlobalKeydown);
-        overlay.addEventListener('click', closeActiveWindow);
+        document.addEventListener('mouseup', () => endDrag(icons));
+        document.addEventListener('keydown', (e) => handleKeydown(e, icons));
+
+        if (overlay) {
+            overlay.addEventListener('click', () => {
+                if (activeWindow) closeWindow(activeWindow, icons);
+            });
+        }
+    }
+
+    function handleIconClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const windowId = this.dataset.window;
+        if (windowId) openWindow(windowId);
+    }
+
+    function handleIconTouch(e) {
+        e.preventDefault();
+        const windowId = this.dataset.window;
+        if (windowId) openWindow(windowId);
+    }
+
+    function handleIconKeydown(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const windowId = this.dataset.window;
+            if (windowId) openWindow(windowId);
+        }
     }
 
     function isMobile() {
@@ -68,15 +96,16 @@
 
     function openWindow(windowId) {
         const win = document.getElementById(windowId);
-        if (!win) return;
+        if (!win) {
+            console.error('Window not found:', windowId);
+            return;
+        }
 
-        // Center window on desktop
+        // Position on desktop
         if (!isMobile()) {
-            const rect = win.getBoundingClientRect();
-            const width = rect.width || 400;
-            const height = rect.height || 300;
-            win.style.left = `${(window.innerWidth - width) / 2}px`;
-            win.style.top = `${(window.innerHeight - height) / 2}px`;
+            win.style.left = '50%';
+            win.style.top = '50%';
+            win.style.transform = 'translate(-50%, -50%)';
         }
 
         win.classList.remove('closing');
@@ -84,42 +113,37 @@
         bringToFront(win);
         activeWindow = win;
 
-        // Show overlay on mobile
-        if (isMobile()) {
+        // Overlay on mobile
+        const overlay = document.getElementById('overlay');
+        if (isMobile() && overlay) {
             overlay.classList.add('active');
         }
 
-        // Focus first focusable element
-        const firstFocusable = win.querySelector('button, a, [tabindex="0"]');
-        if (firstFocusable) {
-            firstFocusable.focus();
+        // Focus close button
+        const closeBtn = win.querySelector('.window-close');
+        if (closeBtn) {
+            setTimeout(() => closeBtn.focus(), 50);
         }
     }
 
-    function closeWindow(win) {
+    function closeWindow(win, icons) {
         if (!win) return;
 
+        const overlay = document.getElementById('overlay');
         win.classList.add('closing');
-        overlay.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
+
+        const windowId = win.id;
 
         setTimeout(() => {
             win.classList.remove('open', 'closing');
-            if (activeWindow === win) {
-                activeWindow = null;
-            }
-            // Return focus to the icon that opened this window
-            const iconSelector = `.icon[data-window="${win.id}"]`;
-            const icon = document.querySelector(iconSelector);
-            if (icon) {
-                icon.focus();
-            }
-        }, 150);
-    }
+            win.style.transform = '';
+            if (activeWindow === win) activeWindow = null;
 
-    function closeActiveWindow() {
-        if (activeWindow) {
-            closeWindow(activeWindow);
-        }
+            // Return focus
+            const icon = document.querySelector(`.icon[data-window="${windowId}"]`);
+            if (icon) icon.focus();
+        }, 150);
     }
 
     function bringToFront(win) {
@@ -128,90 +152,56 @@
         activeWindow = win;
     }
 
-    // Dragging
+    // Dragging (desktop only, titlebar only)
     function startDrag(e, win) {
         if (e.target.closest('.window-close')) return;
+        if (isMobile()) return;
 
-        isDragging = true;
-        activeWindow = win;
-        bringToFront(win);
+        dragStart = { x: e.clientX, y: e.clientY };
+        hasMoved = false;
 
         const rect = win.getBoundingClientRect();
         dragOffset.x = e.clientX - rect.left;
         dragOffset.y = e.clientY - rect.top;
 
-        win.querySelector('.window-titlebar').style.cursor = 'grabbing';
+        // Remove centering transform before dragging
+        win.style.transform = '';
+        win.style.left = rect.left + 'px';
+        win.style.top = rect.top + 'px';
+
+        isDragging = true;
+        activeWindow = win;
+        bringToFront(win);
     }
 
     function onDrag(e) {
         if (!isDragging || !activeWindow) return;
 
+        const dx = e.clientX - dragStart.x;
+        const dy = e.clientY - dragStart.y;
+
+        // Only start dragging if moved more than 5px (prevents click blocking)
+        if (!hasMoved && Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+        hasMoved = true;
+
         const x = e.clientX - dragOffset.x;
         const y = e.clientY - dragOffset.y;
 
-        // Keep window in bounds
         const maxX = window.innerWidth - activeWindow.offsetWidth;
         const maxY = window.innerHeight - activeWindow.offsetHeight;
 
-        activeWindow.style.left = `${Math.max(0, Math.min(x, maxX))}px`;
-        activeWindow.style.top = `${Math.max(0, Math.min(y, maxY))}px`;
+        activeWindow.style.left = Math.max(0, Math.min(x, maxX)) + 'px';
+        activeWindow.style.top = Math.max(0, Math.min(y, maxY)) + 'px';
     }
 
-    function endDrag() {
-        if (isDragging && activeWindow) {
-            const titlebar = activeWindow.querySelector('.window-titlebar');
-            if (titlebar) {
-                titlebar.style.cursor = 'grab';
-            }
-        }
+    function endDrag(icons) {
         isDragging = false;
+        hasMoved = false;
     }
 
-    // Keyboard handling
-    function handleGlobalKeydown(e) {
-        // ESC closes active window
+    function handleKeydown(e, icons) {
         if (e.key === 'Escape' && activeWindow) {
-            closeWindow(activeWindow);
-            return;
-        }
-
-        // Focus trapping in open window
-        if (activeWindow && activeWindow.classList.contains('open')) {
-            trapFocus(e, activeWindow);
+            closeWindow(activeWindow, icons);
         }
     }
-
-    function trapFocus(e, container) {
-        if (e.key !== 'Tab') return;
-
-        const focusables = container.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-
-        if (focusables.length === 0) return;
-
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
-
-        if (e.shiftKey && document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-        }
-    }
-
-    // Handle resize (reposition windows on mobile/desktop switch)
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            if (isMobile()) {
-                overlay.classList.toggle('active', activeWindow !== null);
-            } else {
-                overlay.classList.remove('active');
-            }
-        }, 100);
-    });
 })();
