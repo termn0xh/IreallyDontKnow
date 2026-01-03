@@ -111,8 +111,8 @@ body.wallpaper-candy {
     right: 0;
     height: var(--statusbar-height);
     background: var(--glass-panel);
-    backdrop-filter: blur(25px) saturate(1.8);
-    -webkit-backdrop-filter: blur(25px) saturate(1.8);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
     border-bottom: 1px solid var(--glass-border);
     display: flex;
     align-items: center;
@@ -191,7 +191,7 @@ body.wallpaper-candy {
 }
 
 /* Dropdown Menu */
-.menu-dropdown {
+.desktop-dropdown {
     position: absolute;
     top: calc(var(--statusbar-height) + 6px);
     left: 10px;
@@ -201,7 +201,7 @@ body.wallpaper-candy {
     border-radius: 8px;
     padding: 6px;
     min-width: 160px;
-    display: none;
+    display: none !important;
     flex-direction: column;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     z-index: 2001;
@@ -220,8 +220,8 @@ body.wallpaper-candy {
     }
 }
 
-.menu-dropdown.open {
-    display: flex;
+.desktop-dropdown.open {
+    display: flex !important;
 }
 
 .menu-label {
@@ -237,7 +237,7 @@ body.wallpaper-candy {
 .menu-item {
     background: none;
     border: none;
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
     padding: 6px 10px;
     border-radius: 5px;
     cursor: default;
@@ -245,16 +245,18 @@ body.wallpaper-candy {
     font-size: 13px;
     margin-bottom: 2px;
     transition: background 0.1s;
+    text-decoration: none;
+    display: block;
 }
 
 .menu-item:hover {
     background: var(--accent);
-    color: white;
+    color: white !important;
 }
 
 .menu-item.active {
     background: rgba(255, 255, 255, 0.1);
-    color: var(--accent);
+    color: var(--accent) !important;
 }
 
 /* Separator */
