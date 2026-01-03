@@ -5,15 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desktop — termnh</title>
-  <meta name="description" content="termnh's desktop. Click icons to explore.">
+  <meta name="description" content="termnh's desktop.">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Desktop — termnh">
-  <meta property="og:description" content="termnh's web desktop experience.">
+  <meta property="og:description" content="Personal web desktop.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://termnh.com/desktop/">
 
-  <!-- Favicon -->
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
   <!-- Fonts -->
@@ -24,7 +23,8 @@
   <link rel="stylesheet" href="/assets/css/desktop.css">
 </head>
 
-<body class="wallpaper-gradient">
+<body class="wallpaper-default">
+
   <a href="#desktop" class="skip-link">Skip to desktop</a>
 
   <!-- ==================== STATUS BAR ==================== -->
@@ -32,7 +32,22 @@
     <div class="statusbar-left">
       <a href="/" class="statusbar-logo">termnh</a>
       <nav class="statusbar-menu">
-        <button id="desktop-menu-btn" class="statusbar-btn" aria-haspopup="true">Desktop ▾</button>
+        <button id="desktop-menu-btn" class="statusbar-btn" aria-haspopup="true" aria-expanded="false">
+          Desktop ▾
+        </button>
+        <!-- Dropdown -->
+        <div id="wallpaper-menu" class="menu-dropdown" role="menu">
+          <div class="menu-label">Wallpapers</div>
+          <button class="menu-item wallpaper-option" data-wallpaper="default">Deep Space</button>
+          <button class="menu-item wallpaper-option" data-wallpaper="dawn">Dawn</button>
+          <button class="menu-item wallpaper-option" data-wallpaper="dusk">Dusk</button>
+          <button class="menu-item wallpaper-option" data-wallpaper="midnight">Midnight</button>
+          <button class="menu-item wallpaper-option" data-wallpaper="forest">Forest</button>
+          <button class="menu-item wallpaper-option" data-wallpaper="nebula">Nebula</button>
+          <button class="menu-item wallpaper-option" data-wallpaper="candy">Candy</button>
+          <div class="menu-sep"></div>
+          <a href="/" class="menu-item">← Back to Home</a>
+        </div>
       </nav>
     </div>
 
@@ -42,19 +57,12 @@
 
     <div class="statusbar-right">
       <div class="statusbar-icons">
-        <span title="WiFi">📶</span>
-        <span title="Battery">🔋</span>
+        <span title="WiFi" aria-label="WiFi Connected">📶</span>
+        <span title="Battery" aria-label="Battery Full">🔋</span>
       </div>
       <span id="clock" class="statusbar-clock">00:00</span>
     </div>
   </header>
-
-  <!-- Wallpaper Menu -->
-  <div id="wallpaper-menu" class="wallpaper-menu" role="menu">
-    <button class="wallpaper-option" data-wallpaper="gradient">Default</button>
-    <button class="wallpaper-option" data-wallpaper="sunset">Sunset</button>
-    <button class="wallpaper-option" data-wallpaper="ocean">Ocean</button>
-  </div>
 
   <!-- ==================== DESKTOP AREA ==================== -->
   <main id="desktop" class="desktop">
@@ -62,37 +70,39 @@
   </main>
 
   <!-- ==================== DOCK ==================== -->
-  <nav class="dock" role="navigation" aria-label="Dock">
-    <button class="dock-item" data-window="about-window" aria-label="About">
-      <span class="dock-tooltip">About.txt</span>
-      <div class="dock-icon">📄</div>
-      <div class="dock-indicator"></div>
-    </button>
+  <div class="dock-container">
+    <nav class="dock" role="navigation" aria-label="Dock">
+      <button class="dock-item" data-window="about-window" aria-label="About">
+        <span class="dock-tooltip">About.txt</span>
+        <div class="dock-icon">📄</div>
+        <div class="dock-dot"></div>
+      </button>
 
-    <button class="dock-item" data-window="now-window" aria-label="Now">
-      <span class="dock-tooltip">Now</span>
-      <div class="dock-icon">📌</div>
-      <div class="dock-indicator"></div>
-    </button>
+      <button class="dock-item" data-window="now-window" aria-label="Now">
+        <span class="dock-tooltip">Now</span>
+        <div class="dock-icon">📌</div>
+        <div class="dock-dot"></div>
+      </button>
 
-    <button class="dock-item" data-window="links-window" aria-label="Links">
-      <span class="dock-tooltip">Links</span>
-      <div class="dock-icon">🔗</div>
-      <div class="dock-indicator"></div>
-    </button>
+      <button class="dock-item" data-window="links-window" aria-label="Links">
+        <span class="dock-tooltip">Links</span>
+        <div class="dock-icon">🔗</div>
+        <div class="dock-dot"></div>
+      </button>
 
-    <button class="dock-item" data-window="playground-window" aria-label="Playground">
-      <span class="dock-tooltip">Playground</span>
-      <div class="dock-icon">🎮</div>
-      <div class="dock-indicator"></div>
-    </button>
+      <button class="dock-item" data-window="playground-window" aria-label="Playground">
+        <span class="dock-tooltip">Playground</span>
+        <div class="dock-icon">🎮</div>
+        <div class="dock-dot"></div>
+      </button>
 
-    <a href="/play/waste/" class="dock-item" aria-label="Waste Time">
-      <span class="dock-tooltip">Waste Time</span>
-      <div class="dock-icon">⏰</div>
-      <div class="dock-indicator"></div>
-    </a>
-  </nav>
+      <a href="/play/waste/" class="dock-item" aria-label="Waste Time">
+        <span class="dock-tooltip">Waste Time</span>
+        <div class="dock-icon">⏰</div>
+        <div class="dock-dot"></div>
+      </a>
+    </nav>
+  </div>
 
   <!-- ==================== WINDOWS ==================== -->
 
@@ -100,9 +110,9 @@
   <div id="about-window" class="window" role="dialog" aria-labelledby="about-title" aria-modal="true">
     <div class="window-titlebar">
       <div class="window-controls">
-        <button class="window-btn window-btn-close" aria-label="Close"></button>
-        <button class="window-btn window-btn-minimize" aria-label="Minimize" disabled></button>
-        <button class="window-btn window-btn-maximize" aria-label="Maximize" disabled></button>
+        <button class="traffic-btn traffic-close" aria-label="Close"></button>
+        <button class="traffic-btn traffic-min" aria-label="Minimize"></button>
+        <button class="traffic-btn traffic-max" aria-label="Maximize"></button>
       </div>
       <span class="window-title" id="about-title">About.txt</span>
     </div>
@@ -117,9 +127,9 @@
   <div id="now-window" class="window" role="dialog" aria-labelledby="now-title" aria-modal="true">
     <div class="window-titlebar">
       <div class="window-controls">
-        <button class="window-btn window-btn-close" aria-label="Close"></button>
-        <button class="window-btn window-btn-minimize" aria-label="Minimize" disabled></button>
-        <button class="window-btn window-btn-maximize" aria-label="Maximize" disabled></button>
+        <button class="traffic-btn traffic-close" aria-label="Close"></button>
+        <button class="traffic-btn traffic-min" aria-label="Minimize"></button>
+        <button class="traffic-btn traffic-max" aria-label="Maximize"></button>
       </div>
       <span class="window-title" id="now-title">Now</span>
     </div>
@@ -134,9 +144,9 @@
   <div id="links-window" class="window" role="dialog" aria-labelledby="links-title" aria-modal="true">
     <div class="window-titlebar">
       <div class="window-controls">
-        <button class="window-btn window-btn-close" aria-label="Close"></button>
-        <button class="window-btn window-btn-minimize" aria-label="Minimize" disabled></button>
-        <button class="window-btn window-btn-maximize" aria-label="Maximize" disabled></button>
+        <button class="traffic-btn traffic-close" aria-label="Close"></button>
+        <button class="traffic-btn traffic-min" aria-label="Minimize"></button>
+        <button class="traffic-btn traffic-max" aria-label="Maximize"></button>
       </div>
       <span class="window-title" id="links-title">Links</span>
     </div>
@@ -150,9 +160,9 @@
   <div id="playground-window" class="window" role="dialog" aria-labelledby="playground-title" aria-modal="true">
     <div class="window-titlebar">
       <div class="window-controls">
-        <button class="window-btn window-btn-close" aria-label="Close"></button>
-        <button class="window-btn window-btn-minimize" aria-label="Minimize" disabled></button>
-        <button class="window-btn window-btn-maximize" aria-label="Maximize" disabled></button>
+        <button class="traffic-btn traffic-close" aria-label="Close"></button>
+        <button class="traffic-btn traffic-min" aria-label="Minimize"></button>
+        <button class="traffic-btn traffic-max" aria-label="Maximize"></button>
       </div>
       <span class="window-title" id="playground-title">Playground</span>
     </div>

@@ -17,8 +17,8 @@
     let windowPositions = {};
 
     // Constants
-    const STATUSBAR_HEIGHT = 32;
-    const DOCK_HEIGHT = 86;
+    const STATUSBAR_HEIGHT = 28;
+    const DOCK_HEIGHT = 80;
     const STAGGER_OFFSET = 30;
 
     // Initialize
@@ -70,12 +70,20 @@
 
         desktopBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            menu.classList.toggle('open');
+            const isOpen = menu.classList.contains('open');
+            if (isOpen) {
+                menu.classList.remove('open');
+                desktopBtn.setAttribute('aria-expanded', 'false');
+            } else {
+                menu.classList.add('open');
+                desktopBtn.setAttribute('aria-expanded', 'true');
+            }
         });
 
         // Close menu on outside click
         document.addEventListener('click', () => {
             menu.classList.remove('open');
+            desktopBtn.setAttribute('aria-expanded', 'false');
         });
 
         // Wallpaper options
@@ -83,7 +91,9 @@
             btn.addEventListener('click', () => {
                 const wallpaper = btn.dataset.wallpaper;
                 setWallpaper(wallpaper);
-                menu.classList.remove('open');
+                // highlight active
+                menu.querySelectorAll('.wallpaper-option').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
             });
         });
     }
@@ -94,10 +104,12 @@
     }
 
     function loadWallpaper() {
-        const saved = localStorage.getItem('termnh-wallpaper');
-        if (saved) {
-            document.body.className = `wallpaper-${saved}`;
-        }
+        const saved = localStorage.getItem('termnh-wallpaper') || 'default';
+        document.body.className = `wallpaper-${saved}`;
+
+        // Update active state in menu
+        const btn = document.querySelector(`.wallpaper-option[data-wallpaper="${saved}"]`);
+        if (btn) btn.classList.add('active');
     }
 
     // ===================== DOCK =====================
@@ -134,15 +146,22 @@
 
         windows.forEach((win, index) => {
             const titlebar = win.querySelector('.window-titlebar');
-            const closeBtn = win.querySelector('.window-btn-close');
 
-            // Close button
+            // Traffic lights
+            const closeBtn = win.querySelector('.traffic-close');
+            const minBtn = win.querySelector('.traffic-min');
+            const maxBtn = win.querySelector('.traffic-max');
+
             if (closeBtn) {
                 closeBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     closeWindow(win);
                 });
             }
+
+            // Minimize/Maximize dummy buttons (prevent click propagation)
+            if (minBtn) minBtn.addEventListener('mousedown', e => e.stopPropagation());
+            if (maxBtn) maxBtn.addEventListener('mousedown', e => e.stopPropagation());
 
             // Dragging (desktop only)
             if (titlebar && !isMobile()) {
@@ -166,7 +185,12 @@
         if (!win) return;
 
         if (openWindows.has(windowId)) {
-            closeWindow(win);
+            // If focused, close it. If not focused, focus it.
+            if (win.classList.contains('focused')) {
+                closeWindow(win);
+            } else {
+                focusWindow(win);
+            }
         } else {
             openWindow(win);
         }
@@ -184,8 +208,9 @@
             } else {
                 // Stagger windows
                 const index = parseInt(win.dataset.staggerIndex) || 0;
-                const baseX = (window.innerWidth - 380) / 2;
-                const baseY = (window.innerHeight - DOCK_HEIGHT - 300) / 2 + STATUSBAR_HEIGHT;
+                // Center roughly
+                const baseX = (window.innerWidth - 320) / 2;
+                const baseY = (window.innerHeight * 0.2);
                 win.style.left = (baseX + index * STAGGER_OFFSET) + 'px';
                 win.style.top = (baseY + index * STAGGER_OFFSET) + 'px';
             }
@@ -196,9 +221,10 @@
         focusWindow(win);
         updateDockIndicators();
 
-        // Focus first focusable element
-        const firstFocusable = win.querySelector('button, a, [tabindex="0"]');
+        // Focus logic
+        const firstFocusable = win.querySelector('a, button, [tabindex="0"]');
         if (firstFocusable) {
+            // Delay slightly for animation
             setTimeout(() => firstFocusable.focus(), 50);
         }
     }
@@ -213,27 +239,24 @@
             saveWindowPositions();
         }
 
-        win.classList.remove('open', 'focused');
-        openWindows.delete(windowId);
+        win.classList.add('closing');
+        win.classList.remove('focused');
 
-        if (activeWindow === win) {
-            activeWindow = null;
-        }
+        // Wait for animation
+        setTimeout(() => {
+            win.classList.remove('open', 'closing');
+            openWindows.delete(windowId);
+            if (activeWindow === win) activeWindow = null;
+            updateDockIndicators();
 
-        updateDockIndicators();
-
-        // Return focus to dock item
-        const dockItem = document.querySelector(`.dock-item[data-window="${windowId}"]`);
-        if (dockItem) dockItem.focus();
+            // Return focus to dock
+            const dockItem = document.querySelector(`.dock-item[data-window="${windowId}"]`);
+            if (dockItem) dockItem.focus();
+        }, 200); // 200ms matches CSS animation
     }
 
     function focusWindow(win) {
-        // Remove focus from all windows
-        document.querySelectorAll('.window.focused').forEach(w => {
-            w.classList.remove('focused');
-        });
-
-        // Focus this window
+        document.querySelectorAll('.window.focused').forEach(w => w.classList.remove('focused'));
         win.classList.add('focused');
         windowZIndex++;
         win.style.zIndex = windowZIndex;
@@ -242,7 +265,8 @@
 
     // ===================== DRAGGING =====================
     function startDrag(e, win) {
-        if (e.target.closest('.window-btn')) return;
+        // Prevent if clicking buttons
+        if (e.target.closest('button') || e.target.closest('a')) return;
         if (isMobile()) return;
 
         dragStart = { x: e.clientX, y: e.clientY };
@@ -257,26 +281,28 @@
         focusWindow(win);
 
         win.querySelector('.window-titlebar').style.cursor = 'grabbing';
+        document.body.style.cursor = 'grabbing';
     }
 
     function onDrag(e) {
         if (!isDragging || !activeWindow) return;
+        e.preventDefault(); // Stop text selection
 
         const dx = e.clientX - dragStart.x;
         const dy = e.clientY - dragStart.y;
 
-        // Movement threshold
-        if (!hasMoved && Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+        if (!hasMoved && Math.abs(dx) < 3 && Math.abs(dy) < 3) return;
         hasMoved = true;
 
         let x = e.clientX - dragOffset.x;
         let y = e.clientY - dragOffset.y;
 
-        // Keep in bounds
-        const maxX = window.innerWidth - activeWindow.offsetWidth;
-        const maxY = window.innerHeight - DOCK_HEIGHT - activeWindow.offsetHeight;
+        // Boundaries
+        const maxX = window.innerWidth - 50; // Allow partial offscreen
+        const maxY = window.innerHeight - DOCK_HEIGHT - 30;
 
-        x = Math.max(0, Math.min(x, maxX));
+        // prevent dragging totally lost
+        x = Math.max(-200, Math.min(x, maxX));
         y = Math.max(STATUSBAR_HEIGHT, Math.min(y, maxY));
 
         activeWindow.style.left = x + 'px';
@@ -286,15 +312,15 @@
     function endDrag() {
         if (isDragging && activeWindow) {
             const titlebar = activeWindow.querySelector('.window-titlebar');
-            if (titlebar) titlebar.style.cursor = 'grab';
+            if (titlebar) titlebar.style.cursor = ''; // reset to CSS default
 
-            // Save position
             const rect = activeWindow.getBoundingClientRect();
             windowPositions[activeWindow.id] = { x: rect.left, y: rect.top };
             saveWindowPositions();
         }
         isDragging = false;
         hasMoved = false;
+        document.body.style.cursor = '';
     }
 
     // ===================== KEYBOARD =====================
