@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desktop — termnh</title>
-  <meta name="description" content="termnh's desktop.">
+  <meta name="description" content="termnh's desktop environment.">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Desktop — termnh">
@@ -20,99 +20,146 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/assets/css/desktop.css?v=2">
+  <link rel="stylesheet" href="/assets/css/desktop.css?v=3">
 </head>
 
-<body class="wallpaper-default">
+<body class="wallpaper-ubuntu">
 
   <a href="#desktop" class="skip-link">Skip to desktop</a>
 
-  <!-- ==================== STATUS BAR ==================== -->
-  <header class="statusbar">
-    <div class="statusbar-left">
-      <a href="/" class="statusbar-logo">termnh</a>
-      <nav class="statusbar-menu">
-        <button id="desktop-menu-btn" class="statusbar-btn" aria-haspopup="true" aria-expanded="false">
-          Desktop ▾
+  <!-- ==================== TOP BAR (GNOME Panel) ==================== -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button id="activities-btn" class="activities-btn" aria-haspopup="true" aria-expanded="false">
+        Activities
+      </button>
+    </div>
+
+    <div class="topbar-center">
+      <span id="clock" class="topbar-clock">Fri 16:00</span>
+    </div>
+
+    <div class="topbar-right">
+      <div class="system-menu">
+        <button id="system-tray-btn" class="system-tray" aria-haspopup="true" aria-expanded="false">
+          <span class="tray-icon" title="Network">📶</span>
+          <span class="tray-icon" title="Volume">🔊</span>
+          <span class="tray-icon" title="Battery">🔋</span>
         </button>
-        <!-- Dropdown -->
-        <div id="wallpaper-menu" class="desktop-dropdown" role="menu">
-          <div class="menu-label">Wallpapers</div>
-          <button class="menu-item wallpaper-option" data-wallpaper="default">Deep Space</button>
-          <button class="menu-item wallpaper-option" data-wallpaper="dawn">Dawn</button>
-          <button class="menu-item wallpaper-option" data-wallpaper="dusk">Dusk</button>
-          <button class="menu-item wallpaper-option" data-wallpaper="midnight">Midnight</button>
-          <button class="menu-item wallpaper-option" data-wallpaper="forest">Forest</button>
-          <button class="menu-item wallpaper-option" data-wallpaper="nebula">Nebula</button>
-          <button class="menu-item wallpaper-option" data-wallpaper="candy">Candy</button>
-          <div class="menu-sep"></div>
-          <a href="/" class="menu-item">← Back to Home</a>
+
+        <!-- System Dropdown -->
+        <div id="system-dropdown" class="system-dropdown" role="menu">
+          <div class="menu-section">
+            <div class="menu-label">Wallpaper</div>
+            <button class="menu-item wallpaper-option" data-wallpaper="ubuntu">Ubuntu</button>
+            <button class="menu-item wallpaper-option" data-wallpaper="cosmic">Cosmic</button>
+            <button class="menu-item wallpaper-option" data-wallpaper="midnight">Midnight</button>
+            <button class="menu-item wallpaper-option" data-wallpaper="forest">Forest</button>
+            <button class="menu-item wallpaper-option" data-wallpaper="sunset">Sunset</button>
+          </div>
+          <div class="menu-section">
+            <a href="/" class="menu-item">🏠 Back to Home</a>
+          </div>
         </div>
-      </nav>
-    </div>
-
-    <div class="statusbar-center">
-      <span>termnh.com</span>
-    </div>
-
-    <div class="statusbar-right">
-      <div class="statusbar-icons">
-        <span title="WiFi" aria-label="WiFi Connected">📶</span>
-        <span title="Battery" aria-label="Battery Full">🔋</span>
       </div>
-      <span id="clock" class="statusbar-clock">00:00</span>
+
+      <button id="power-btn" class="power-btn" aria-label="Power" title="Power">⏻</button>
     </div>
   </header>
+
+  <!-- ==================== LEFT DOCK (Ubuntu Dock) ==================== -->
+  <nav class="dock" role="navigation" aria-label="Application Dock">
+    <div class="dock-items">
+      <button class="dock-item" data-window="about-window" aria-label="About">
+        <span class="dock-tooltip">About</span>
+        <div class="dock-icon">📄</div>
+        <div class="dock-indicator"></div>
+      </button>
+
+      <button class="dock-item" data-window="now-window" aria-label="Now">
+        <span class="dock-tooltip">Now</span>
+        <div class="dock-icon">📌</div>
+        <div class="dock-indicator"></div>
+      </button>
+
+      <button class="dock-item" data-window="links-window" aria-label="Links">
+        <span class="dock-tooltip">Links</span>
+        <div class="dock-icon">🔗</div>
+        <div class="dock-indicator"></div>
+      </button>
+
+      <button class="dock-item" data-window="playground-window" aria-label="Playground">
+        <span class="dock-tooltip">Playground</span>
+        <div class="dock-icon">🎮</div>
+        <div class="dock-indicator"></div>
+      </button>
+
+      <a href="/play/waste/" class="dock-item" aria-label="Waste Time">
+        <span class="dock-tooltip">Waste Time</span>
+        <div class="dock-icon">⏰</div>
+        <div class="dock-indicator"></div>
+      </a>
+    </div>
+
+    <div class="dock-separator"></div>
+
+    <div class="dock-bottom">
+      <a href="/" class="dock-item" aria-label="Home">
+        <span class="dock-tooltip">Home</span>
+        <div class="dock-icon">🏠</div>
+        <div class="dock-indicator"></div>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ==================== ACTIVITIES OVERLAY ==================== -->
+  <div id="activities-overlay" class="activities-overlay" role="dialog" aria-modal="true" aria-label="Activities">
+    <div class="activities-search">
+      <input type="text" placeholder="Type to search..." aria-label="Search applications">
+    </div>
+    <div class="app-grid">
+      <button class="app-grid-item" data-window="about-window">
+        <span class="app-grid-icon">📄</span>
+        <span class="app-grid-label">About</span>
+      </button>
+      <button class="app-grid-item" data-window="now-window">
+        <span class="app-grid-icon">📌</span>
+        <span class="app-grid-label">Now</span>
+      </button>
+      <button class="app-grid-item" data-window="links-window">
+        <span class="app-grid-icon">🔗</span>
+        <span class="app-grid-label">Links</span>
+      </button>
+      <button class="app-grid-item" data-window="playground-window">
+        <span class="app-grid-icon">🎮</span>
+        <span class="app-grid-label">Playground</span>
+      </button>
+      <a href="/play/waste/" class="app-grid-item">
+        <span class="app-grid-icon">⏰</span>
+        <span class="app-grid-label">Waste Time</span>
+      </a>
+      <a href="/" class="app-grid-item">
+        <span class="app-grid-icon">🏠</span>
+        <span class="app-grid-label">Home</span>
+      </a>
+    </div>
+  </div>
 
   <!-- ==================== DESKTOP AREA ==================== -->
   <main id="desktop" class="desktop">
     <!-- Windows render here -->
   </main>
 
-  <!-- ==================== DOCK ==================== -->
-  <div class="dock-container">
-    <nav class="dock" role="navigation" aria-label="Dock">
-      <button class="dock-item" data-window="about-window" aria-label="About">
-        <span class="dock-tooltip">About.txt</span>
-        <div class="dock-icon">📄</div>
-        <div class="dock-dot"></div>
-      </button>
-
-      <button class="dock-item" data-window="now-window" aria-label="Now">
-        <span class="dock-tooltip">Now</span>
-        <div class="dock-icon">📌</div>
-        <div class="dock-dot"></div>
-      </button>
-
-      <button class="dock-item" data-window="links-window" aria-label="Links">
-        <span class="dock-tooltip">Links</span>
-        <div class="dock-icon">🔗</div>
-        <div class="dock-dot"></div>
-      </button>
-
-      <button class="dock-item" data-window="playground-window" aria-label="Playground">
-        <span class="dock-tooltip">Playground</span>
-        <div class="dock-icon">🎮</div>
-        <div class="dock-dot"></div>
-      </button>
-
-      <a href="/play/waste/" class="dock-item" aria-label="Waste Time">
-        <span class="dock-tooltip">Waste Time</span>
-        <div class="dock-icon">⏰</div>
-        <div class="dock-dot"></div>
-      </a>
-    </nav>
-  </div>
-
   <!-- ==================== WINDOWS ==================== -->
 
   <!-- About Window -->
   <div id="about-window" class="window" role="dialog" aria-labelledby="about-title" aria-modal="true">
-    <div class="window-titlebar">
+    <div class="window-header">
+      <div class="window-header-left"></div>
+      <span class="window-title" id="about-title">About</span>
       <div class="window-controls">
-        <button class="traffic-btn traffic-close" aria-label="Close"></button>
+        <button class="window-btn close-btn" aria-label="Close">✕</button>
       </div>
-      <span class="window-title" id="about-title">About.txt</span>
     </div>
     <div class="window-content">
       <p>Hi, I'm termnh.</p>
@@ -123,11 +170,12 @@
 
   <!-- Now Window -->
   <div id="now-window" class="window" role="dialog" aria-labelledby="now-title" aria-modal="true">
-    <div class="window-titlebar">
-      <div class="window-controls">
-        <button class="traffic-btn traffic-close" aria-label="Close"></button>
-      </div>
+    <div class="window-header">
+      <div class="window-header-left"></div>
       <span class="window-title" id="now-title">Now</span>
+      <div class="window-controls">
+        <button class="window-btn close-btn" aria-label="Close">✕</button>
+      </div>
     </div>
     <div class="window-content">
       <p>Currently working on a few small things.</p>
@@ -138,11 +186,12 @@
 
   <!-- Links Window -->
   <div id="links-window" class="window" role="dialog" aria-labelledby="links-title" aria-modal="true">
-    <div class="window-titlebar">
-      <div class="window-controls">
-        <button class="traffic-btn traffic-close" aria-label="Close"></button>
-      </div>
+    <div class="window-header">
+      <div class="window-header-left"></div>
       <span class="window-title" id="links-title">Links</span>
+      <div class="window-controls">
+        <button class="window-btn close-btn" aria-label="Close">✕</button>
+      </div>
     </div>
     <div class="window-content">
       <p><strong>GitHub:</strong> <a href="https://github.com/termn0xh" target="_blank" rel="noopener">termn0xh</a></p>
@@ -152,11 +201,12 @@
 
   <!-- Playground Window -->
   <div id="playground-window" class="window" role="dialog" aria-labelledby="playground-title" aria-modal="true">
-    <div class="window-titlebar">
-      <div class="window-controls">
-        <button class="traffic-btn traffic-close" aria-label="Close"></button>
-      </div>
+    <div class="window-header">
+      <div class="window-header-left"></div>
       <span class="window-title" id="playground-title">Playground</span>
+      <div class="window-controls">
+        <button class="window-btn close-btn" aria-label="Close">✕</button>
+      </div>
     </div>
     <div class="window-content">
       <p><a href="/play/waste/">Waste your time →</a></p>
@@ -164,7 +214,7 @@
     </div>
   </div>
 
-  <script src="/assets/js/desktop.js"></script>
+  <script src="/assets/js/desktop.js?v=3"></script>
 </body>
 
 </html>
