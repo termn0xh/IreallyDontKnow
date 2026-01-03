@@ -24,101 +24,158 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
 
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #0a0a0f;
+      color: #e8e8ed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .hero {
+      max-width: 500px;
+    }
+
+    .greeting {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      color: #00d4aa;
+      margin-bottom: 12px;
+    }
+
+    .name {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .name {
+        font-size: 3.5rem;
+      }
+    }
+
+    .bio {
+      font-size: 1.125rem;
+      color: #9898a8;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      color: #5a5a6a;
+      margin-bottom: 32px;
+    }
+
+    .status::before {
+      content: '→ ';
+      color: #00d4aa;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      padding: 12px 24px;
+      border-radius: 6px;
+      border: 1px solid #2a2a3a;
+      background: #1a1a24;
+      color: #e8e8ed;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn:hover {
+      border-color: #00d4aa;
+      box-shadow: 0 0 20px rgba(0, 212, 170, 0.15);
+    }
+
+    .btn:focus {
+      outline: 2px solid #00d4aa;
+      outline-offset: 2px;
+    }
+
+    .btn-primary {
+      background: #00d4aa;
+      border-color: #00d4aa;
+      color: #0a0a0f;
+    }
+
+    .btn-primary:hover {
+      background: #00a885;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #5a5a6a;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .footer a {
+      color: #5a5a6a;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: #9898a8;
+    }
+  </style>
 </head>
 
 <body>
-  <a href="#desktop" class="skip-link">Skip to content</a>
+  <main class="hero">
+    <p class="greeting">Hey, I'm</p>
+    <h1 class="name">termnh</h1>
+    <p class="bio">I build things—tools, experiments, and whatever I'm curious about.</p>
+    <p class="status">Currently tinkering with small projects.</p>
 
-  <!-- Desktop -->
-  <main id="desktop" class="desktop">
-
-    <button class="icon" data-window="about-window" aria-label="Open About" type="button">
-      <div class="icon-img">📄</div>
-      <span class="icon-label">About.txt</span>
-    </button>
-
-    <button class="icon" data-window="now-window" aria-label="Open Now" type="button">
-      <div class="icon-img">📌</div>
-      <span class="icon-label">Now</span>
-    </button>
-
-    <button class="icon" data-window="links-window" aria-label="Open Links" type="button">
-      <div class="icon-img">🔗</div>
-      <span class="icon-label">Links</span>
-    </button>
-
-    <button class="icon" data-window="playground-window" aria-label="Open Playground" type="button">
-      <div class="icon-img">🎮</div>
-      <span class="icon-label">Playground</span>
-    </button>
-
+    <div class="buttons">
+      <a href="/desktop/" class="btn btn-primary">Open Desktop</a>
+      <a href="/play/waste/" class="btn">Waste some time →</a>
+    </div>
   </main>
 
-  <!-- Overlay -->
-  <div id="overlay" class="overlay"></div>
-
-  <!-- About Window -->
-  <div id="about-window" class="window" role="dialog" aria-labelledby="about-title">
-    <div class="window-titlebar">
-      <span class="window-title" id="about-title">About.txt</span>
-      <div class="window-controls">
-        <button class="window-close" aria-label="Close" type="button">×</button>
-      </div>
-    </div>
-    <div class="window-content">
-      <p>Hi, I'm termnh.</p>
-      <p>This is my personal site.</p>
-      <p>I make small tools and random experiments.</p>
-    </div>
-  </div>
-
-  <!-- Now Window -->
-  <div id="now-window" class="window" role="dialog" aria-labelledby="now-title">
-    <div class="window-titlebar">
-      <span class="window-title" id="now-title">Now</span>
-      <div class="window-controls">
-        <button class="window-close" aria-label="Close" type="button">×</button>
-      </div>
-    </div>
-    <div class="window-content">
-      <p>Currently working on a few small things.</p>
-      <p>Learning as I go.</p>
-      <p class="meta-text">Last updated: 2025-01-03</p>
-    </div>
-  </div>
-
-  <!-- Links Window -->
-  <div id="links-window" class="window" role="dialog" aria-labelledby="links-title">
-    <div class="window-titlebar">
-      <span class="window-title" id="links-title">Links</span>
-      <div class="window-controls">
-        <button class="window-close" aria-label="Close" type="button">×</button>
-      </div>
-    </div>
-    <div class="window-content">
-      <p><strong>GitHub:</strong> <a href="https://github.com/termn0xh" target="_blank" rel="noopener">termn0xh</a></p>
-      <p><strong>Email:</strong> <a href="mailto:hi@termnh.com">hi@termnh.com</a></p>
-    </div>
-  </div>
-
-  <!-- Playground Window -->
-  <div id="playground-window" class="window" role="dialog" aria-labelledby="playground-title">
-    <div class="window-titlebar">
-      <span class="window-title" id="playground-title">Playground</span>
-      <div class="window-controls">
-        <button class="window-close" aria-label="Close" type="button">×</button>
-      </div>
-    </div>
-    <div class="window-content">
-      <p><a href="/play/waste/">Waste your time →</a></p>
-      <p class="meta-text">More later.</p>
-    </div>
-  </div>
-
-  <script src="/assets/js/main.js"></script>
+  <footer class="footer">
+    <a href="https://github.com/termn0xh" target="_blank" rel="noopener">GitHub</a>
+  </footer>
 </body>
 
 </html>
