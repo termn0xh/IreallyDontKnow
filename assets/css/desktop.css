@@ -1,38 +1,46 @@
 /* ====================================================================
-   UBUNTU GNOME DESKTOP THEME
+   UBUNTU GNOME DESKTOP THEME - Yaru Fidelity Pass
    ==================================================================== */
 
-/* -------------------- CSS VARIABLES -------------------- */
+/* -------------------- CSS VARIABLES (Ubuntu Palette) -------------------- */
 :root {
-    /* Ubuntu/GNOME Colors */
-    --gnome-bg: #1d1d1d;
-    --gnome-panel: rgba(0, 0, 0, 0.85);
-    --gnome-dock: rgba(0, 0, 0, 0.75);
-    --gnome-window: #2d2d2d;
-    --gnome-window-header: #3d3d3d;
-    --gnome-border: rgba(255, 255, 255, 0.08);
-    --gnome-text: #ffffff;
-    --gnome-text-dim: rgba(255, 255, 255, 0.7);
-    --gnome-text-muted: rgba(255, 255, 255, 0.5);
+    /* Ubuntu/Yaru Colors */
+    --ubuntu-bg: #1e1e1e;
+    --ubuntu-panel: rgba(30, 30, 30, 0.97);
+    --ubuntu-dock: rgba(30, 30, 30, 0.92);
+    --ubuntu-window: #2d2d2d;
+    --ubuntu-window-header: #383838;
+    --ubuntu-border: rgba(255, 255, 255, 0.06);
+    --ubuntu-border-light: rgba(255, 255, 255, 0.1);
+    --ubuntu-text: #ffffff;
+    --ubuntu-text-dim: rgba(255, 255, 255, 0.8);
+    --ubuntu-text-muted: rgba(255, 255, 255, 0.5);
 
-    /* Ubuntu Accent */
+    /* Ubuntu Accent Colors */
     --ubuntu-orange: #e95420;
     --ubuntu-aubergine: #2c001e;
     --ubuntu-purple: #77216f;
+    --ubuntu-green: #26a269;
+    --ubuntu-blue: #3584e4;
+
+    /* Hover/Active States */
+    --hover-bg: rgba(255, 255, 255, 0.08);
+    --active-bg: rgba(255, 255, 255, 0.12);
 
     /* Shadows */
-    --shadow-window: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
-    --shadow-window-focus: 0 12px 48px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
-    --shadow-panel: 0 1px 4px rgba(0, 0, 0, 0.3);
+    --shadow-window: 0 4px 16px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.2);
+    --shadow-window-focus: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-dock: 0 0 0 1px rgba(255, 255, 255, 0.04);
 
-    /* Sizing */
+    /* Sizing (Ubuntu GNOME defaults) */
     --topbar-height: 32px;
-    --dock-width: 68px;
-    --dock-icon-size: 48px;
+    --dock-width: 64px;
+    --dock-icon-size: 32px;
+    --dock-item-size: 48px;
 
     /* Transitions */
-    --transition-fast: 0.15s ease;
-    --transition-normal: 0.25s ease;
+    --transition-fast: 0.1s ease;
+    --transition-normal: 0.2s ease;
 }
 
 /* -------------------- RESET & BASE -------------------- */
@@ -49,27 +57,28 @@ body {
     height: 100%;
     overflow: hidden;
     font-family: 'Inter', 'Ubuntu', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
-    color: var(--gnome-text);
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--ubuntu-text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 a {
-    color: var(--ubuntu-orange);
+    color: var(--ubuntu-blue);
     text-decoration: none;
     transition: color var(--transition-fast);
 }
 
 a:hover {
-    color: #ff7847;
+    color: #62a0ea;
     text-decoration: underline;
 }
 
 a:focus-visible {
     outline: 2px solid var(--ubuntu-orange);
     outline-offset: 2px;
+    border-radius: 2px;
 }
 
 button {
@@ -84,6 +93,7 @@ button {
 button:focus-visible {
     outline: 2px solid var(--ubuntu-orange);
     outline-offset: 2px;
+    border-radius: 4px;
 }
 
 /* Skip Link */
@@ -97,6 +107,7 @@ button:focus-visible {
     padding: 8px 16px;
     border-radius: 4px;
     z-index: 10000;
+    font-weight: 500;
 }
 
 .skip-link:focus {
@@ -105,47 +116,53 @@ button:focus-visible {
 
 /* -------------------- WALLPAPERS -------------------- */
 body {
-    background: linear-gradient(135deg, #2c001e 0%, #77216f 50%, #e95420 100%);
+    background: linear-gradient(140deg, #2c001e 0%, #77216f 35%, #e95420 100%);
     background-attachment: fixed;
 }
 
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
 body.wallpaper-ubuntu {
-    background: linear-gradient(135deg, #2c001e 0%, #77216f 50%, #e95420 100%);
+    background: linear-gradient(140deg, #2c001e 0%, #77216f 35%, #e95420 100%);
 }
 
 body.wallpaper-cosmic {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+    background: linear-gradient(140deg, #0d0d1a 0%, #1a1a3a 40%, #2a2a5a 100%);
 }
 
 body.wallpaper-midnight {
-    background: linear-gradient(135deg, #0d0d0d 0%, #1a1a2e 50%, #2d1b4e 100%);
+    background: linear-gradient(140deg, #0a0a0a 0%, #1a1a2e 50%, #2d1b4e 100%);
 }
 
 body.wallpaper-forest {
-    background: linear-gradient(135deg, #1a2f1a 0%, #2d4a2d 50%, #1e3d1e 100%);
+    background: linear-gradient(140deg, #0d1a0d 0%, #1a3a1a 50%, #2a5a2a 100%);
 }
 
 body.wallpaper-sunset {
-    background: linear-gradient(135deg, #2c1810 0%, #8b4513 40%, #e95420 80%, #ff8c00 100%);
+    background: linear-gradient(140deg, #1a0f0a 0%, #5a2a1a 40%, #e95420 80%, #ff8c4a 100%);
 }
 
-/* -------------------- TOP BAR (GNOME PANEL) -------------------- */
+/* -------------------- TOP BAR (GNOME Shell Panel) -------------------- */
 .topbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     height: var(--topbar-height);
-    background: var(--gnome-panel);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--ubuntu-panel);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 8px;
+    padding: 0;
     z-index: 1000;
-    box-shadow: var(--shadow-panel);
-    border-bottom: 1px solid var(--gnome-border);
+    border-bottom: 1px solid var(--ubuntu-border);
 }
 
 .topbar-left,
@@ -153,7 +170,7 @@ body.wallpaper-sunset {
 .topbar-right {
     display: flex;
     align-items: center;
-    gap: 4px;
+    height: 100%;
 }
 
 .topbar-left {
@@ -162,8 +179,7 @@ body.wallpaper-sunset {
 }
 
 .topbar-center {
-    flex: 1;
-    justify-content: center;
+    flex: 0 0 auto;
 }
 
 .topbar-right {
@@ -173,82 +189,92 @@ body.wallpaper-sunset {
 
 /* Activities Button */
 .activities-btn {
-    padding: 4px 12px;
-    border-radius: 6px;
+    height: 100%;
+    padding: 0 16px;
     font-size: 13px;
     font-weight: 500;
-    color: var(--gnome-text);
+    color: var(--ubuntu-text);
     transition: background var(--transition-fast);
 }
 
 .activities-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--hover-bg);
 }
 
 .activities-btn.active {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--active-bg);
 }
 
 /* Clock */
 .topbar-clock {
+    height: 100%;
+    padding: 0 16px;
     font-size: 13px;
     font-weight: 500;
-    color: var(--gnome-text);
-    padding: 4px 12px;
-    border-radius: 6px;
+    color: var(--ubuntu-text);
+    display: flex;
+    align-items: center;
     transition: background var(--transition-fast);
-    cursor: default;
 }
 
 .topbar-clock:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--hover-bg);
 }
 
 /* System Tray */
+.system-menu {
+    position: relative;
+    height: 100%;
+}
+
 .system-tray {
+    height: 100%;
     display: flex;
     align-items: center;
-    gap: 2px;
-    padding: 4px 8px;
-    border-radius: 6px;
+    gap: 6px;
+    padding: 0 12px;
     transition: background var(--transition-fast);
 }
 
 .system-tray:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--hover-bg);
 }
 
 .tray-icon {
-    font-size: 14px;
+    width: 16px;
+    height: 16px;
     opacity: 0.9;
 }
 
 .power-btn {
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 14px;
+    height: 100%;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: background var(--transition-fast);
 }
 
 .power-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--hover-bg);
+}
+
+.power-btn svg {
+    width: 14px;
+    height: 14px;
 }
 
 /* -------------------- SYSTEM MENU DROPDOWN -------------------- */
-.system-menu {
-    position: relative;
-}
-
 .system-dropdown {
     position: absolute;
     top: calc(var(--topbar-height) + 4px);
     right: 0;
-    min-width: 280px;
-    background: var(--gnome-window);
+    min-width: 260px;
+    background: var(--ubuntu-window);
     border-radius: 12px;
-    box-shadow: var(--shadow-window);
-    border: 1px solid var(--gnome-border);
-    padding: 8px 0;
+    box-shadow: var(--shadow-window-focus);
+    border: 1px solid var(--ubuntu-border-light);
+    padding: 6px 0;
     display: none;
     z-index: 1001;
 }
@@ -258,11 +284,11 @@ body.wallpaper-sunset {
 }
 
 .menu-section {
-    padding: 8px 16px;
+    padding: 6px;
 }
 
 .menu-section+.menu-section {
-    border-top: 1px solid var(--gnome-border);
+    border-top: 1px solid var(--ubuntu-border);
 }
 
 .menu-label {
@@ -270,97 +296,102 @@ body.wallpaper-sunset {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: var(--gnome-text-muted);
-    margin-bottom: 8px;
+    color: var(--ubuntu-text-muted);
+    padding: 6px 10px;
 }
 
 .menu-item {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     width: 100%;
-    padding: 8px 12px;
-    border-radius: 6px;
+    padding: 8px 10px;
+    border-radius: 8px;
     font-size: 13px;
-    color: var(--gnome-text);
+    color: var(--ubuntu-text);
     text-align: left;
     transition: background var(--transition-fast);
     text-decoration: none !important;
 }
 
 .menu-item:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--hover-bg);
     text-decoration: none !important;
 }
 
-.menu-item.wallpaper-option.selected {
-    background: rgba(233, 84, 32, 0.2);
+.menu-icon {
+    width: 18px;
+    height: 18px;
 }
 
 .menu-item.wallpaper-option.selected::before {
     content: "✓";
     margin-right: 4px;
     color: var(--ubuntu-orange);
+    font-weight: 600;
 }
 
-/* -------------------- LEFT DOCK -------------------- */
+/* -------------------- LEFT DOCK (Ubuntu Dock) -------------------- */
 .dock {
     position: fixed;
     top: var(--topbar-height);
     left: 0;
     bottom: 0;
     width: var(--dock-width);
-    background: var(--gnome-dock);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--ubuntu-dock);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 12px 0;
-    gap: 4px;
+    padding: 8px 0;
     z-index: 900;
-    border-right: 1px solid var(--gnome-border);
+    border-right: 1px solid var(--ubuntu-border);
+    box-shadow: var(--shadow-dock);
 }
 
 .dock-items {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
     flex: 1;
+    padding: 4px 0;
 }
 
 .dock-separator {
     width: 36px;
     height: 1px;
-    background: var(--gnome-border);
-    margin: 8px 0;
+    background: var(--ubuntu-border-light);
+    margin: 6px 0;
 }
 
 .dock-bottom {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    margin-top: auto;
+    gap: 2px;
+    padding: 4px 0;
 }
 
 .dock-item {
     position: relative;
-    width: 52px;
-    height: 52px;
+    width: var(--dock-item-size);
+    height: var(--dock-item-size);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: 10px;
     background: transparent;
-    transition: all var(--transition-fast);
+    transition: background var(--transition-fast);
     cursor: pointer;
     text-decoration: none;
 }
 
 .dock-item:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: var(--hover-bg);
+}
+
+.dock-item:active {
+    background: var(--active-bg);
 }
 
 .dock-item:focus-visible {
@@ -369,15 +400,16 @@ body.wallpaper-sunset {
 }
 
 .dock-icon {
-    font-size: 28px;
-    line-height: 1;
+    width: var(--dock-icon-size);
+    height: var(--dock-icon-size);
     pointer-events: none;
+    border-radius: 6px;
 }
 
-/* Active Indicator (Ubuntu orange strip) */
+/* Active Indicator (Ubuntu orange dot) */
 .dock-indicator {
     position: absolute;
-    left: -2px;
+    left: 2px;
     top: 50%;
     transform: translateY(-50%);
     width: 4px;
@@ -388,11 +420,11 @@ body.wallpaper-sunset {
 }
 
 .dock-item.active .dock-indicator {
-    height: 20px;
+    height: 8px;
 }
 
 .dock-item.focused .dock-indicator {
-    height: 36px;
+    height: 20px;
 }
 
 /* Tooltip */
@@ -401,8 +433,8 @@ body.wallpaper-sunset {
     left: calc(100% + 8px);
     top: 50%;
     transform: translateY(-50%);
-    background: var(--gnome-window);
-    color: var(--gnome-text);
+    background: var(--ubuntu-window);
+    color: var(--ubuntu-text);
     padding: 6px 12px;
     border-radius: 6px;
     font-size: 12px;
@@ -412,7 +444,8 @@ body.wallpaper-sunset {
     visibility: hidden;
     pointer-events: none;
     transition: opacity var(--transition-fast), visibility var(--transition-fast);
-    box-shadow: var(--shadow-panel);
+    box-shadow: var(--shadow-window);
+    border: 1px solid var(--ubuntu-border-light);
     z-index: 1000;
 }
 
@@ -425,17 +458,17 @@ body.wallpaper-sunset {
 .activities-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    padding-top: 100px;
     z-index: 2000;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.2s ease, visibility 0.2s ease;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
 }
 
 .activities-overlay.active {
@@ -445,24 +478,24 @@ body.wallpaper-sunset {
 
 .activities-search {
     width: 100%;
-    max-width: 500px;
-    margin-bottom: 40px;
+    max-width: 460px;
+    margin-bottom: 48px;
 }
 
 .activities-search input {
     width: 100%;
-    padding: 14px 20px;
+    padding: 12px 18px;
     background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 24px;
-    font-size: 16px;
-    color: var(--gnome-text);
+    font-size: 15px;
+    color: var(--ubuntu-text);
     outline: none;
     transition: all var(--transition-fast);
 }
 
 .activities-search input::placeholder {
-    color: var(--gnome-text-muted);
+    color: var(--ubuntu-text-muted);
 }
 
 .activities-search input:focus {
@@ -472,8 +505,8 @@ body.wallpaper-sunset {
 
 .app-grid {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    gap: 24px;
+    grid-template-columns: repeat(3, 96px);
+    gap: 20px;
 }
 
 .app-grid-item {
@@ -481,13 +514,13 @@ body.wallpaper-sunset {
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    padding: 16px;
+    padding: 12px;
     border-radius: 12px;
     background: transparent;
     cursor: pointer;
     transition: background var(--transition-fast);
     text-decoration: none;
-    color: var(--gnome-text);
+    color: var(--ubuntu-text);
 }
 
 .app-grid-item:hover {
@@ -500,8 +533,9 @@ body.wallpaper-sunset {
 }
 
 .app-grid-icon {
-    font-size: 48px;
-    line-height: 1;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
 }
 
 .app-grid-label {
@@ -518,17 +552,18 @@ body.wallpaper-sunset {
     right: 0;
     bottom: 0;
     overflow: hidden;
+    z-index: 1;
 }
 
-/* -------------------- WINDOWS (GNOME STYLE) -------------------- */
+/* -------------------- WINDOWS (GNOME HIG) -------------------- */
 .window {
     position: absolute;
-    min-width: 320px;
+    min-width: 360px;
     min-height: 200px;
-    background: var(--gnome-window);
+    background: var(--ubuntu-window);
     border-radius: 12px;
     box-shadow: var(--shadow-window);
-    border: 1px solid var(--gnome-border);
+    border: 1px solid var(--ubuntu-border-light);
     display: none;
     flex-direction: column;
     overflow: hidden;
@@ -541,7 +576,6 @@ body.wallpaper-sunset {
 
 .window.focused {
     box-shadow: var(--shadow-window-focus);
-    border-color: rgba(255, 255, 255, 0.12);
 }
 
 /* Window Header Bar (GNOME style) */
@@ -550,9 +584,10 @@ body.wallpaper-sunset {
     align-items: center;
     justify-content: space-between;
     height: 40px;
-    padding: 0 8px;
-    background: var(--gnome-window-header);
-    border-bottom: 1px solid var(--gnome-border);
+    padding: 0 6px;
+    background: var(--ubuntu-window-header);
+    border-bottom: 1px solid var(--ubuntu-border);
+    border-radius: 12px 12px 0 0;
     cursor: grab;
     user-select: none;
 }
@@ -562,13 +597,13 @@ body.wallpaper-sunset {
 }
 
 .window-header-left {
-    width: 80px;
+    width: 36px;
 }
 
 .window-title {
     font-size: 13px;
     font-weight: 600;
-    color: var(--gnome-text);
+    color: var(--ubuntu-text);
     text-align: center;
     flex: 1;
     pointer-events: none;
@@ -577,42 +612,45 @@ body.wallpaper-sunset {
 .window-controls {
     display: flex;
     align-items: center;
-    gap: 4px;
-    width: 80px;
+    width: 36px;
     justify-content: flex-end;
 }
 
 .window-btn {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    font-size: 14px;
-    color: var(--gnome-text-dim);
+    color: var(--ubuntu-text-dim);
     background: transparent;
     transition: all var(--transition-fast);
 }
 
+.window-btn svg {
+    width: 12px;
+    height: 12px;
+}
+
 .window-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: var(--gnome-text);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--ubuntu-text);
 }
 
 .window-btn.close-btn:hover {
-    background: #e74c3c;
+    background: #c01c28;
     color: white;
 }
 
 /* Window Content */
 .window-content {
     flex: 1;
-    padding: 20px;
+    padding: 20px 24px;
     overflow-y: auto;
     font-size: 14px;
     line-height: 1.6;
-    color: var(--gnome-text-dim);
+    color: var(--ubuntu-text-dim);
 }
 
 .window-content p {
@@ -624,20 +662,22 @@ body.wallpaper-sunset {
 }
 
 .window-content strong {
-    color: var(--gnome-text);
+    color: var(--ubuntu-text);
     font-weight: 600;
 }
 
 .meta-text {
     font-size: 12px;
-    color: var(--gnome-text-muted);
-    margin-top: 16px;
+    color: var(--ubuntu-text-muted);
+    margin-top: 16px !important;
 }
 
 /* -------------------- RESPONSIVE -------------------- */
 @media (max-width: 768px) {
     :root {
         --dock-width: 0px;
+        --dock-item-size: 52px;
+        --dock-icon-size: 28px;
     }
 
     .dock {
@@ -646,29 +686,29 @@ body.wallpaper-sunset {
         right: 0;
         bottom: 0;
         width: 100%;
-        height: 64px;
+        height: 56px;
         flex-direction: row;
         justify-content: center;
-        padding: 0 16px;
+        padding: 0 8px;
         border-right: none;
-        border-top: 1px solid var(--gnome-border);
+        border-top: 1px solid var(--ubuntu-border);
     }
 
     .dock-items {
         flex-direction: row;
-        gap: 8px;
+        gap: 4px;
+        padding: 0;
     }
 
     .dock-separator {
         width: 1px;
-        height: 36px;
+        height: 32px;
         margin: 0 8px;
     }
 
     .dock-bottom {
         flex-direction: row;
-        margin-top: 0;
-        margin-left: auto;
+        padding: 0;
     }
 
     .dock-tooltip {
@@ -686,18 +726,18 @@ body.wallpaper-sunset {
     }
 
     .dock-item.active .dock-indicator {
-        width: 20px;
+        width: 8px;
         height: 4px;
     }
 
     .dock-item.focused .dock-indicator {
-        width: 36px;
+        width: 20px;
         height: 4px;
     }
 
     .desktop {
         left: 0;
-        bottom: 64px;
+        bottom: 56px;
     }
 
     .window {
@@ -705,22 +745,28 @@ body.wallpaper-sunset {
         top: var(--topbar-height) !important;
         left: 0 !important;
         right: 0 !important;
-        bottom: 64px !important;
+        bottom: 56px !important;
         width: 100% !important;
+        border-radius: 0;
+        min-width: 0;
+    }
+
+    .window-header {
         border-radius: 0;
     }
 
     .activities-overlay {
-        padding: 20px;
+        padding: 60px 20px 20px;
     }
 
     .app-grid {
         grid-template-columns: repeat(3, 80px);
-        gap: 16px;
+        gap: 12px;
     }
 
     .app-grid-icon {
-        font-size: 36px;
+        width: 40px;
+        height: 40px;
     }
 }
 

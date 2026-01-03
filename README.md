@@ -76,4 +76,10 @@ python3 -m http.server 8080
 
 ---
 
+## Icon Attribution
+
+Desktop icons (`/assets/icons/`) are custom SVGs inspired by the [Yaru icon theme](https://github.com/ubuntu/yaru) (Ubuntu's default icon set). Licensed under CC-BY-SA 4.0 / GPL-3.0.
+
+---
+
 Built by [termnh](https://termnh.com)

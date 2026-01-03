@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/assets/css/desktop.css?v=3">
+  <link rel="stylesheet" href="/assets/css/desktop.css?v=4">
 </head>
 
 <body class="wallpaper-ubuntu">
@@ -36,15 +36,23 @@
     </div>
 
     <div class="topbar-center">
-      <span id="clock" class="topbar-clock">Fri 16:00</span>
+      <button id="clock-btn" class="topbar-clock" aria-label="Date and time">
+        <span id="clock">Sat 16:00</span>
+      </button>
     </div>
 
     <div class="topbar-right">
       <div class="system-menu">
         <button id="system-tray-btn" class="system-tray" aria-haspopup="true" aria-expanded="false">
-          <span class="tray-icon" title="Network">📶</span>
-          <span class="tray-icon" title="Volume">🔊</span>
-          <span class="tray-icon" title="Battery">🔋</span>
+          <svg class="tray-icon" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 1a7 7 0 100 14A7 7 0 008 1zM2 8a6 6 0 0112 0 6 6 0 01-12 0zm7-3v3.5l2.5 1.5-.5.87L8 9V5h1z" />
+          </svg>
+          <svg class="tray-icon" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 2L3 6v6c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V6L8 2zm0 2l3 2.5V12H5V6.5L8 4z" />
+          </svg>
+          <svg class="tray-icon" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M2 5h12v6H2V5zm1 1v4h10V6H3zm11 0h1v4h-1V6z" />
+          </svg>
         </button>
 
         <!-- System Dropdown -->
@@ -58,12 +66,20 @@
             <button class="menu-item wallpaper-option" data-wallpaper="sunset">Sunset</button>
           </div>
           <div class="menu-section">
-            <a href="/" class="menu-item">🏠 Back to Home</a>
+            <a href="/" class="menu-item">
+              <img src="/assets/icons/home.svg" alt="" class="menu-icon">
+              Back to Home
+            </a>
           </div>
         </div>
       </div>
 
-      <button id="power-btn" class="power-btn" aria-label="Power" title="Power">⏻</button>
+      <button id="power-btn" class="power-btn" aria-label="Power menu">
+        <svg viewBox="0 0 16 16" fill="currentColor">
+          <path
+            d="M8 1v6h1V1H8zM4.5 3.5l.7.7A5 5 0 1013 8a5 5 0 00-2.8-4.5l-.4.9A4 4 0 118 12a4 4 0 01-2.8-6.8l.7-.7z" />
+        </svg>
+      </button>
     </div>
   </header>
 
@@ -72,31 +88,31 @@
     <div class="dock-items">
       <button class="dock-item" data-window="about-window" aria-label="About">
         <span class="dock-tooltip">About</span>
-        <div class="dock-icon">📄</div>
+        <img src="/assets/icons/document.svg" alt="" class="dock-icon">
         <div class="dock-indicator"></div>
       </button>
 
       <button class="dock-item" data-window="now-window" aria-label="Now">
         <span class="dock-tooltip">Now</span>
-        <div class="dock-icon">📌</div>
+        <img src="/assets/icons/clock.svg" alt="" class="dock-icon">
         <div class="dock-indicator"></div>
       </button>
 
       <button class="dock-item" data-window="links-window" aria-label="Links">
         <span class="dock-tooltip">Links</span>
-        <div class="dock-icon">🔗</div>
+        <img src="/assets/icons/link.svg" alt="" class="dock-icon">
         <div class="dock-indicator"></div>
       </button>
 
       <button class="dock-item" data-window="playground-window" aria-label="Playground">
         <span class="dock-tooltip">Playground</span>
-        <div class="dock-icon">🎮</div>
+        <img src="/assets/icons/grid.svg" alt="" class="dock-icon">
         <div class="dock-indicator"></div>
       </button>
 
       <a href="/play/waste/" class="dock-item" aria-label="Waste Time">
         <span class="dock-tooltip">Waste Time</span>
-        <div class="dock-icon">⏰</div>
+        <img src="/assets/icons/gamepad.svg" alt="" class="dock-icon">
         <div class="dock-indicator"></div>
       </a>
     </div>
@@ -106,7 +122,7 @@
     <div class="dock-bottom">
       <a href="/" class="dock-item" aria-label="Home">
         <span class="dock-tooltip">Home</span>
-        <div class="dock-icon">🏠</div>
+        <img src="/assets/icons/home.svg" alt="" class="dock-icon">
         <div class="dock-indicator"></div>
       </a>
     </div>
@@ -119,27 +135,27 @@
     </div>
     <div class="app-grid">
       <button class="app-grid-item" data-window="about-window">
-        <span class="app-grid-icon">📄</span>
+        <img src="/assets/icons/document.svg" alt="" class="app-grid-icon">
         <span class="app-grid-label">About</span>
       </button>
       <button class="app-grid-item" data-window="now-window">
-        <span class="app-grid-icon">📌</span>
+        <img src="/assets/icons/clock.svg" alt="" class="app-grid-icon">
         <span class="app-grid-label">Now</span>
       </button>
       <button class="app-grid-item" data-window="links-window">
-        <span class="app-grid-icon">🔗</span>
+        <img src="/assets/icons/link.svg" alt="" class="app-grid-icon">
         <span class="app-grid-label">Links</span>
       </button>
       <button class="app-grid-item" data-window="playground-window">
-        <span class="app-grid-icon">🎮</span>
+        <img src="/assets/icons/grid.svg" alt="" class="app-grid-icon">
         <span class="app-grid-label">Playground</span>
       </button>
       <a href="/play/waste/" class="app-grid-item">
-        <span class="app-grid-icon">⏰</span>
+        <img src="/assets/icons/gamepad.svg" alt="" class="app-grid-icon">
         <span class="app-grid-label">Waste Time</span>
       </a>
       <a href="/" class="app-grid-item">
-        <span class="app-grid-icon">🏠</span>
+        <img src="/assets/icons/home.svg" alt="" class="app-grid-icon">
         <span class="app-grid-label">Home</span>
       </a>
     </div>
@@ -158,7 +174,11 @@
       <div class="window-header-left"></div>
       <span class="window-title" id="about-title">About</span>
       <div class="window-controls">
-        <button class="window-btn close-btn" aria-label="Close">✕</button>
+        <button class="window-btn close-btn" aria-label="Close">
+          <svg viewBox="0 0 16 16" fill="currentColor">
+            <path d="M4.5 3.5l7 7m0-7l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
       </div>
     </div>
     <div class="window-content">
@@ -174,7 +194,11 @@
       <div class="window-header-left"></div>
       <span class="window-title" id="now-title">Now</span>
       <div class="window-controls">
-        <button class="window-btn close-btn" aria-label="Close">✕</button>
+        <button class="window-btn close-btn" aria-label="Close">
+          <svg viewBox="0 0 16 16" fill="currentColor">
+            <path d="M4.5 3.5l7 7m0-7l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
       </div>
     </div>
     <div class="window-content">
@@ -190,7 +214,11 @@
       <div class="window-header-left"></div>
       <span class="window-title" id="links-title">Links</span>
       <div class="window-controls">
-        <button class="window-btn close-btn" aria-label="Close">✕</button>
+        <button class="window-btn close-btn" aria-label="Close">
+          <svg viewBox="0 0 16 16" fill="currentColor">
+            <path d="M4.5 3.5l7 7m0-7l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
       </div>
     </div>
     <div class="window-content">
@@ -205,7 +233,11 @@
       <div class="window-header-left"></div>
       <span class="window-title" id="playground-title">Playground</span>
       <div class="window-controls">
-        <button class="window-btn close-btn" aria-label="Close">✕</button>
+        <button class="window-btn close-btn" aria-label="Close">
+          <svg viewBox="0 0 16 16" fill="currentColor">
+            <path d="M4.5 3.5l7 7m0-7l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
       </div>
     </div>
     <div class="window-content">
@@ -214,7 +246,7 @@
     </div>
   </div>
 
-  <script src="/assets/js/desktop.js?v=3"></script>
+  <script src="/assets/js/desktop.js?v=4"></script>
 </body>
 
 </html>
