@@ -1,46 +1,30 @@
-/* ====================================================================
-   UBUNTU GNOME DESKTOP THEME - Pixel Perfect Polish
-   ==================================================================== */
+/* ==========================================================================
+   UBUNTU GNOME DESKTOP - Clean Rebuild
+   ========================================================================== */
 
-/* -------------------- CSS VARIABLES -------------------- */
 :root {
-    /* Ubuntu/Yaru Palette (Exact) */
-    --ubuntu-bg: #1e1e1e;
-    --ubuntu-panel: #1e1e1e;
-    --ubuntu-dock: rgba(28, 28, 28, 0.95);
-    --ubuntu-window: #303030;
-    --ubuntu-window-header: #383838;
-    --ubuntu-menu: #303030;
-    --ubuntu-border: rgba(255, 255, 255, 0.08);
-    --ubuntu-border-light: rgba(255, 255, 255, 0.12);
-    --ubuntu-text: #ffffff;
-    --ubuntu-text-dim: #dfdfdf;
-    --ubuntu-text-muted: #9a9a9a;
-
-    --ubuntu-orange: #e95420;
-    --ubuntu-warm-grey: #aea79f;
-
-    /* Pill Colors */
-    --pill-inactive: rgba(255, 255, 255, 0.1);
-    --pill-active: #e95420;
-    --pill-active-hover: #ff6a33;
-    --pill-hover: rgba(255, 255, 255, 0.15);
+    /* Ubuntu Yaru Dark Colors */
+    --bg-dark: #1e1e1e;
+    --bg-surface: #2d2d2d;
+    --bg-elevated: #3d3d3d;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --text-muted: #808080;
+    --accent: #e95420;
+    --accent-hover: #ff6b3d;
+    --border: rgba(255, 255, 255, 0.08);
 
     /* Layout */
     --topbar-height: 32px;
-    --dock-width: 68px;
-    /* Slightly wider for authentic spacing */
-    --dock-icon-size: 32px;
-    --dock-item-size: 48px;
+    --dock-width: 64px;
 
-    /* Shadows */
-    --shadow-window: 0 4px 16px rgba(0, 0, 0, 0.45);
-    --shadow-popup: 0 4px 20px rgba(0, 0, 0, 0.5);
-
-    --transition: 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* Wallpapers */
+    --wp-ubuntu: linear-gradient(135deg, #2c001e 0%, #77216f 50%, #e95420 100%);
+    --wp-cosmic: linear-gradient(135deg, #0d0d2b 0%, #1a1a4a 50%, #2d2d6d 100%);
+    --wp-forest: linear-gradient(135deg, #0a1a0a 0%, #1c3a1c 50%, #2a5a2a 100%);
 }
 
-/* -------------------- RESET & BASE -------------------- */
+/* Reset */
 *,
 *::before,
 *::after {
@@ -49,598 +33,369 @@
     padding: 0;
 }
 
+button {
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
 html,
 body {
     height: 100%;
     overflow: hidden;
-    font-family: 'Ubuntu', 'Inter', -apple-system, sans-serif;
-    /* Priority: Ubuntu */
+    font-family: 'Ubuntu', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 14px;
     line-height: 1.5;
-    color: var(--ubuntu-text);
+    color: var(--text-primary);
+    background: var(--wp-ubuntu);
     user-select: none;
     -webkit-font-smoothing: antialiased;
-    cursor: default;
 }
 
-button,
-a {
-    cursor: default;
+/* Wallpaper classes */
+body.wp-ubuntu {
+    background: var(--wp-ubuntu);
 }
 
-/* -------------------- ANIMATIONS -------------------- */
-@keyframes window-open {
-    0% {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
+body.wp-cosmic {
+    background: var(--wp-cosmic);
 }
 
-@keyframes window-close {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    100% {
-        opacity: 0;
-        transform: scale(0.95);
-    }
+body.wp-forest {
+    background: var(--wp-forest);
 }
 
-@keyframes popup-open {
-    0% {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Vignette overlay */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+    pointer-events: none;
+    z-index: 0;
 }
 
-/* -------------------- WALLPAPERS -------------------- */
-body {
-    background: linear-gradient(135deg, #2c001e 0%, #77216f 50%, #e95420 100%);
-    transition: background 0.3s ease;
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 9999;
+    padding: 8px 16px;
+    background: var(--accent);
+    color: white;
 }
 
-body.wallpaper-ubuntu {
-    background: linear-gradient(135deg, #2c001e 0%, #77216f 50%, #e95420 100%);
+.skip-link:focus {
+    left: 8px;
+    top: 8px;
 }
 
-body.wallpaper-cosmic {
-    background: linear-gradient(135deg, #0d0d1a 0%, #1a1a3a 40%, #2a2a5a 100%);
-}
-
-body.wallpaper-midnight {
-    background: linear-gradient(135deg, #050510 0%, #1a1a2e 50%, #2d1b4e 100%);
-}
-
-body.wallpaper-forest {
-    background: linear-gradient(135deg, #0a1a0a 0%, #1c3a1c 50%, #2a5a2a 100%);
-}
-
-body.wallpaper-sunset {
-    background: linear-gradient(135deg, #1a0a00 0%, #5a1a1a 40%, #e95420 80%, #ff9e5e 100%);
-}
-
-/* -------------------- TOP BAR -------------------- */
+/* ==========================================================================
+   TOP BAR - Flat GNOME Style (NO Pills)
+   ========================================================================== */
 .topbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     height: var(--topbar-height);
-    background: var(--ubuntu-panel);
+    background: var(--bg-dark);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 12px;
-    z-index: 2000;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 0 8px;
+    z-index: 1000;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
 }
 
-.topbar-left,
-.topbar-center,
-.topbar-right {
+.topbar-item {
+    height: 100%;
+    padding: 0 12px;
     display: flex;
     align-items: center;
-    height: 100%;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.15s;
 }
 
-.topbar-left {
-    flex: 1;
-    justify-content: flex-start;
+.topbar-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.topbar-item.active {
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .topbar-center {
-    flex: 0 0 auto;
-    position: relative;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .topbar-right {
-    flex: 1;
-    justify-content: flex-end;
-    gap: 4px;
-}
-
-.activities-btn {
-    height: 24px;
-    padding: 0 12px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 500;
-    transition: background var(--transition);
-}
-
-.activities-btn:hover {
-    background: var(--pill-hover);
-}
-
-.activities-btn.active {
-    background: var(--pill-hover);
-    box-shadow: inset 0 -2px var(--ubuntu-orange);
-}
-
-.topbar-clock {
-    height: 24px;
-    padding: 0 12px;
-    border-radius: 12px;
-    font-weight: 500;
-    font-family: 'Ubuntu', sans-serif;
-    transition: background var(--transition);
-}
-
-.topbar-clock:hover,
-.topbar-clock.active {
-    background: var(--pill-hover);
-}
-
-/* System Indicator Pill */
-.system-tray {
-    height: 24px;
-    padding: 0 10px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    border-radius: 12px;
-    transition: background var(--transition);
 }
 
-.system-tray:hover,
-.system-tray.active {
-    background: var(--pill-hover);
-}
-
-.tray-icon {
-    width: 15px;
-    height: 15px;
-    fill: white;
-}
-
-/* -------------------- CALENDAR DROPDOWN -------------------- */
-.calendar-dropdown {
-    position: absolute;
-    top: calc(var(--topbar-height) + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 320px;
-    background: var(--ubuntu-menu);
-    border: 1px solid var(--ubuntu-border);
-    border-radius: 12px;
-    box-shadow: var(--shadow-popup);
-    padding: 16px;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.15s ease, visibility 0.15s ease;
-}
-
-.calendar-dropdown.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    animation: popup-open 0.2s;
-}
-
-.calendar-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
-.calendar-day {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 4px;
-}
-
-.calendar-date {
-    font-size: 14px;
-    color: var(--ubuntu-text-dim);
-}
-
-.calendar-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border-top: 1px solid var(--ubuntu-border);
-    padding-top: 12px;
-}
-
-.cal-row {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    font-size: 13px;
-}
-
-.cal-row.header span {
-    color: var(--ubuntu-text-muted);
-    font-weight: 700;
-    font-size: 11px;
-    margin-bottom: 6px;
-}
-
-.cal-row span {
-    padding: 6px 0;
-    border-radius: 50%;
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.cal-row span.today {
-    background: var(--ubuntu-orange);
-    color: white;
-    font-weight: 700;
-}
-
-.cal-row span.dim {
-    color: var(--ubuntu-text-muted);
-    opacity: 0.5;
-}
-
-.calendar-events {
-    border-top: 1px solid var(--ubuntu-border);
-    margin-top: 12px;
-    padding-top: 12px;
-    min-height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.no-events {
-    color: var(--ubuntu-text-muted);
-    font-size: 13px;
-}
-
-/* -------------------- QUICK SETTINGS (GNOME 40+) -------------------- */
-.system-dropdown {
-    position: absolute;
-    top: calc(var(--topbar-height) + 6px);
-    right: 8px;
-    width: 360px;
-    background: var(--ubuntu-menu);
-    border: 1px solid var(--ubuntu-border);
-    border-radius: 20px;
-    /* GNOME style is very rounded */
-    box-shadow: var(--shadow-popup);
-    padding: 16px;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.15s ease, visibility 0.15s ease;
-}
-
-.system-dropdown.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    animation: popup-open 0.2s;
-}
-
-.qs-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.qs-btn {
-    background: var(--pill-inactive);
-    border-radius: 24px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    gap: 12px;
-    transition: background var(--transition);
-}
-
-.qs-btn:hover {
-    background: var(--pill-hover);
-}
-
-.qs-btn.active {
-    background: var(--pill-active);
-    color: white;
-}
-
-.qs-btn.active:hover {
-    background: var(--pill-active-hover);
-}
-
-.qs-icon {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.qs-icon svg {
-    width: 18px;
-    height: 18px;
-}
-
-.qs-label {
-    font-size: 13px;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.qs-sliders {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.qs-slider-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    height: 24px;
-    margin-top: 12px;
-}
-
-.qs-slider-icon {
+.topbar-icon {
     width: 16px;
     height: 16px;
-    fill: var(--ubuntu-text);
+    fill: currentColor;
 }
 
-.qs-slider-track {
+/* ==========================================================================
+   POPUPS (System Menu, Calendar)
+   ========================================================================== */
+.popup {
+    position: fixed;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+    z-index: 1100;
+}
+
+.popup.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.system-menu {
+    top: calc(var(--topbar-height) + 8px);
+    right: 8px;
+    width: 280px;
+    padding: 12px;
+}
+
+.calendar-popup {
+    top: calc(var(--topbar-height) + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    width: 300px;
+    padding: 16px;
+}
+
+.calendar-popup.open {
+    transform: translateX(-50%) translateY(0);
+}
+
+.popup-section {
+    padding: 8px 0;
+}
+
+.popup-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 0;
+}
+
+.toggle-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 8px;
+    border-radius: 6px;
+}
+
+.toggle-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.toggle-status {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.volume-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+}
+
+.volume-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.slider {
     flex: 1;
     height: 6px;
-    background: var(--pill-inactive);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 3px;
-    position: relative;
     overflow: hidden;
 }
 
-.qs-slider-fill {
+.slider-fill {
     height: 100%;
-    background: var(--ubuntu-orange);
+    background: var(--accent);
 }
 
-.wallpaper-grid {
+.section-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.wallpaper-row {
     display: flex;
     gap: 8px;
-    margin-top: 8px;
-    overflow-x: auto;
-    padding-bottom: 4px;
 }
 
-.wp-preview {
+.wp-btn {
     width: 48px;
     height: 32px;
     border-radius: 6px;
     border: 2px solid transparent;
-    flex-shrink: 0;
-    cursor: pointer;
+    transition: border-color 0.15s, transform 0.1s;
 }
 
-.wp-preview.active {
-    border-color: var(--ubuntu-orange);
+.wp-btn:hover {
+    transform: scale(1.05);
 }
 
-.qs-footer {
+.wp-btn.active {
+    border-color: var(--accent);
+}
+
+.wp-ubuntu {
+    background: var(--wp-ubuntu);
+    background-size: 200%;
+}
+
+.wp-cosmic {
+    background: var(--wp-cosmic);
+    background-size: 200%;
+}
+
+.wp-forest {
+    background: var(--wp-forest);
+    background-size: 200%;
+}
+
+.popup-footer {
     display: flex;
-    gap: 12px;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 8px;
+}
+
+.popup-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+
+.popup-action:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.popup-action svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* Calendar */
+.calendar-header {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.calendar-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.calendar-date {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.calendar-grid {
+    border-top: 1px solid var(--border);
     padding-top: 12px;
 }
 
-.qs-action-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 21px;
-    background: var(--pill-inactive);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ubuntu-text);
-    margin-left: auto;
-}
-
-.qs-action-btn:first-child {
-    margin-left: 0;
-}
-
-.qs-action-btn:hover {
-    background: var(--pill-hover);
-}
-
-.qs-action-btn svg {
-    width: 18px;
-    height: 18px;
-}
-
-/* -------------------- CONTEXT MENU -------------------- */
-.context-menu {
-    position: fixed;
-    width: 200px;
-    background: var(--ubuntu-menu);
-    border: 1px solid var(--ubuntu-border);
-    border-radius: 8px;
-    box-shadow: var(--shadow-popup);
-    padding: 6px 0;
-    display: none;
-    z-index: 5000;
-}
-
-.context-menu.active {
-    display: block;
-    animation: popup-open 0.1s;
-}
-
-.context-item {
-    width: 100%;
-    padding: 6px 16px;
-    text-align: left;
-    font-size: 13px;
-    color: var(--ubuntu-text);
-    transition: background var(--transition);
-}
-
-.context-item:hover {
-    background: var(--ubuntu-orange);
-    color: white;
-}
-
-.context-sep {
-    height: 1px;
-    background: var(--ubuntu-border);
-    margin: 4px 0;
-}
-
-/* -------------------- DOCK -------------------- */
-.dock {
-    position: fixed;
-    top: var(--topbar-height);
-    left: 0;
-    bottom: 0;
-    width: var(--dock-width);
-    background: var(--ubuntu-dock);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px 0;
-    z-index: 1000;
-}
-
-.dock-item {
-    width: var(--dock-item-size);
-    height: var(--dock-item-size);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin-bottom: 4px;
-    transition: background 0.1s;
-}
-
-.dock-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.dock-item:active {
-    background: rgba(255, 255, 255, 0.12);
-}
-
-.dock-icon {
-    width: var(--dock-icon-size);
-    height: var(--dock-icon-size);
-    transition: transform 0.1s;
-}
-
-.dock-item:active .dock-icon {
-    transform: scale(0.9);
-}
-
-.dock-indicator {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 0;
-    background: var(--ubuntu-orange);
-    border-radius: 0 4px 4px 0;
-    transition: height 0.2s;
-}
-
-.dock-item.active .dock-indicator {
-    height: 8px;
-}
-
-.dock-item.focused .dock-indicator {
-    height: 24px;
-}
-
-/* Tooltip */
-.dock-tooltip {
-    position: absolute;
-    left: calc(100% + 12px);
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--ubuntu-menu);
-    color: var(--ubuntu-text);
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 12px;
+.cal-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 11px;
     font-weight: 500;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.15s;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--ubuntu-border);
-    z-index: 1000;
+    color: var(--text-muted);
+    margin-bottom: 8px;
 }
 
-.dock-item:hover .dock-tooltip {
-    opacity: 1;
-    visibility: visible;
+.cal-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
 }
 
+.cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border-radius: 50%;
+}
 
-/* -------------------- ACTIVITIES OVERLAY -------------------- */
+.cal-day.dim {
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+.cal-day.today {
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   ACTIVITIES OVERLAY
+   ========================================================================== */
 .activities-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(20, 20, 20, 0.85);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    z-index: 2000;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    z-index: 900;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 100px;
+    padding-top: 80px;
     opacity: 0;
     visibility: hidden;
-    pointer-events: none;
     transition: opacity 0.2s, visibility 0.2s;
 }
 
-.activities-overlay.active {
+.activities-overlay.open {
     opacity: 1;
     visibility: visible;
-    pointer-events: auto;
-    animation: popup-open 0.25s;
 }
 
 .activities-search {
@@ -652,18 +407,18 @@ body.wallpaper-sunset {
 .activities-search input {
     width: 100%;
     padding: 12px 20px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 24px;
     color: white;
     font-size: 15px;
     outline: none;
-    transition: 0.2s;
+    transition: background 0.2s, border-color 0.2s;
 }
 
 .activities-search input:focus {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: var(--ubuntu-orange);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--accent);
 }
 
 .app-grid {
@@ -672,146 +427,344 @@ body.wallpaper-sunset {
     gap: 24px;
 }
 
-.app-grid-item {
+.app-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
     padding: 16px;
     border-radius: 16px;
-    transition: 0.2s;
+    transition: background 0.15s;
 }
 
-.app-grid-item:hover {
-    background: rgba(255, 255, 255, 0.08);
+.app-item:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
-.app-grid-icon {
+.app-icon {
     width: 64px;
     height: 64px;
 }
 
-.app-grid-label {
+.app-label {
     font-size: 13px;
     font-weight: 500;
-    color: white;
 }
 
-/* -------------------- DESKTOP AREA -------------------- */
+/* ==========================================================================
+   LEFT DOCK (Ubuntu Dock)
+   ========================================================================== */
+.dock {
+    position: fixed;
+    top: var(--topbar-height);
+    left: 0;
+    bottom: 0;
+    width: var(--dock-width);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    z-index: 100;
+}
+
+.dock-apps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.dock-separator {
+    width: 32px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 8px 0;
+}
+
+.dock-bottom {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.dock-item {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, transform 0.1s;
+}
+
+.dock-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+}
+
+.dock-item:active {
+    transform: scale(0.95);
+}
+
+.dock-icon {
+    width: 32px;
+    height: 32px;
+    pointer-events: none;
+}
+
+/* Active Indicator - Ubuntu Orange Dot */
+.dock-indicator {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 0;
+    background: var(--accent);
+    border-radius: 0 4px 4px 0;
+    transition: height 0.2s;
+}
+
+.dock-item.active .dock-indicator {
+    height: 8px;
+}
+
+.dock-item.focused .dock-indicator {
+    height: 20px;
+}
+
+/* Tooltip */
+.dock-tooltip {
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 200;
+}
+
+.dock-item:hover .dock-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ==========================================================================
+   DESKTOP AREA
+   ========================================================================== */
 .desktop {
     position: fixed;
     top: var(--topbar-height);
     left: var(--dock-width);
     right: 0;
     bottom: 0;
-    overflow: hidden;
     z-index: 1;
 }
 
-/* -------------------- WINDOWS -------------------- */
+/* ==========================================================================
+   WINDOWS (GNOME Style)
+   ========================================================================== */
 .window {
+    position: absolute;
+    width: 420px;
+    min-height: 200px;
+    background: var(--bg-surface);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.2);
     display: none;
     flex-direction: column;
-    background: var(--ubuntu-window);
-    border-radius: 12px;
-    box-shadow: var(--shadow-window);
-    border: 1px solid rgba(0, 0, 0, 0.3);
     overflow: hidden;
-    position: absolute;
+    z-index: 10;
 }
 
 .window.open {
     display: flex;
-    animation: window-open 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    animation: windowOpen 0.2s ease-out;
 }
 
 .window.closing {
-    animation: window-close 0.2s ease-in forwards;
+    animation: windowClose 0.15s ease-in forwards;
+}
+
+@keyframes windowOpen {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes windowClose {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
 }
 
 .window-header {
-    height: 44px;
-    /* Taller header */
-    background: var(--ubuntu-window-header);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 12px;
-    user-select: none;
-}
-
-.window-title {
-    font-weight: 700;
-    font-size: 14px;
-    color: var(--ubuntu-text);
-    text-align: center;
-    flex: 1;
-    pointer-events: none;
-}
-
-.window-btn {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
+    height: 40px;
+    background: var(--bg-elevated);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--ubuntu-text-dim);
-    transition: 0.1s;
+    position: relative;
+    cursor: grab;
+    flex-shrink: 0;
 }
 
-.window-btn:hover {
+.window-header:active {
+    cursor: grabbing;
+}
+
+.window-title {
+    font-size: 13px;
+    font-weight: 500;
+    pointer-events: none;
+}
+
+.window-controls {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+.window-close {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: background 0.1s, color 0.1s;
+}
+
+.window-close svg {
+    width: 10px;
+    height: 10px;
+}
+
+.window-close:hover {
+    background: #e74c3c;
     color: white;
 }
 
-.window-btn.close-btn:hover {
-    background: #d03535;
-}
-
-.window-content {
-    padding: 24px;
+.window-body {
+    padding: 20px;
+    flex: 1;
     overflow-y: auto;
-    color: var(--ubuntu-text-dim);
+    color: var(--text-secondary);
+    line-height: 1.7;
 }
 
-.window-content a {
+.window-body p {
+    margin-bottom: 8px;
+}
+
+.window-body p:last-child {
+    margin-bottom: 0;
+}
+
+.window-body a {
     color: #5e92d9;
     text-decoration: none;
 }
 
-.window-content a:hover {
+.window-body a:hover {
     text-decoration: underline;
 }
 
-/* -------------------- RESPONSIVE -------------------- */
-@media (max-width: 768px) {
-    :root {
-        --dock-width: 0px;
-    }
+.window-body .meta {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 16px;
+}
 
+/* Focus ring for accessibility */
+.dock-item:focus-visible,
+.window-close:focus-visible,
+.topbar-item:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
     .dock {
+        top: auto;
         bottom: 0;
+        left: 0;
+        right: 0;
         width: 100%;
         height: 64px;
-        top: auto;
         flex-direction: row;
         justify-content: center;
-        gap: 8px;
+        padding: 0 8px;
     }
 
-    .dock-item {
-        margin-bottom: 0;
+    .dock-apps {
+        flex-direction: row;
+    }
+
+    .dock-separator {
+        width: 1px;
+        height: 32px;
+        margin: 0 8px;
+    }
+
+    .dock-bottom {
+        margin-top: 0;
+        flex-direction: row;
     }
 
     .dock-indicator {
         left: 50%;
-        bottom: 0;
         top: auto;
+        bottom: 4px;
         transform: translateX(-50%);
         width: 0;
         height: 3px;
+        border-radius: 3px;
     }
 
     .dock-item.active .dock-indicator {
@@ -820,12 +773,21 @@ body.wallpaper-sunset {
     }
 
     .dock-item.focused .dock-indicator {
-        width: 20px;
+        width: 16px;
         height: 3px;
+    }
+
+    .dock-tooltip {
+        display: none;
     }
 
     .desktop {
         left: 0;
         bottom: 64px;
+    }
+
+    .window {
+        width: calc(100% - 32px);
+        left: 16px !important;
     }
 }

@@ -6,366 +6,262 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desktop — termnh</title>
   <meta name="description" content="termnh's desktop environment.">
-
-  <!-- Open Graph -->
   <meta property="og:title" content="Desktop — termnh">
   <meta property="og:description" content="Personal web desktop.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://termnh.com/desktop/">
-
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
-  <!-- Fonts: Inter + Ubuntu -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Ubuntu:wght@300;400;500;700&display=swap"
-    rel="stylesheet">
-
-  <link rel="stylesheet" href="/assets/css/desktop.css?v=5">
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/desktop.css?v=7">
 </head>
 
-<body class="wallpaper-ubuntu">
-
+<body>
   <a href="#desktop" class="skip-link">Skip to desktop</a>
 
-  <!-- ==================== TOP BAR (GNOME Panel) ==================== -->
-  <header class="topbar">
-    <div class="topbar-left">
-      <button id="activities-btn" class="activities-btn" aria-haspopup="true" aria-expanded="false">
-        Activities
-      </button>
-    </div>
+  <!-- ========== GNOME TOP BAR ========== -->
+  <header class="topbar" role="banner">
+    <button id="activities-btn" class="topbar-item topbar-activities" aria-haspopup="true" aria-expanded="false">
+      Activities
+    </button>
 
     <div class="topbar-center">
-      <button id="clock-btn" class="topbar-clock" aria-label="Date and time" aria-haspopup="true" aria-expanded="false">
-        <span id="clock">Sat 16:00</span>
+      <button id="clock-btn" class="topbar-item topbar-clock" aria-haspopup="true" aria-expanded="false">
+        <span id="clock">Sat 20:19</span>
       </button>
-
-      <!-- Calendar Dropdown -->
-      <div id="calendar-dropdown" class="calendar-dropdown" role="dialog" aria-label="Calendar">
-        <div class="calendar-header">
-          <div class="calendar-day">Saturday</div>
-          <div class="calendar-date">January 3, 2026</div>
-        </div>
-        <div class="calendar-grid">
-          <div class="cal-row header">
-            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-          </div>
-          <div class="cal-row">
-            <span class="dim">28</span><span class="dim">29</span><span class="dim">30</span><span
-              class="dim">31</span><span>1</span><span>2</span><span class="today">3</span>
-          </div>
-          <div class="cal-row">
-            <span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
-          </div>
-          <div class="cal-row">
-            <span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span>
-          </div>
-          <div class="cal-row">
-            <span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span>
-          </div>
-          <div class="cal-row">
-            <span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span>31</span>
-          </div>
-        </div>
-        <div class="calendar-events">
-          <div class="no-events">No Events</div>
-        </div>
-      </div>
     </div>
 
     <div class="topbar-right">
-      <div class="system-menu">
-        <button id="system-tray-btn" class="system-tray" aria-haspopup="true" aria-expanded="false">
-          <svg class="tray-icon" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 1a7 7 0 100 14A7 7 0 008 1zM2 8a6 6 0 0112 0 6 6 0 01-12 0zm7-3v3.5l2.5 1.5-.5.87L8 9V5h1z" />
-          </svg>
-          <svg class="tray-icon" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 2L3 6v6c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V6L8 2zm0 2l3 2.5V12H5V6.5L8 4z" />
-          </svg>
-          <svg class="tray-icon" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M2 5h12v6H2V5zm1 1v4h10V6H3zm11 0h1v4h-1V6z" />
-          </svg>
-
-          <div class="tray-indicator"></div>
-        </button>
-
-        <!-- Quick Settings Dropdown -->
-        <div id="system-dropdown" class="system-dropdown" role="menu">
-
-          <!-- Toggles Grid -->
-          <div class="qs-grid">
-            <button class="qs-btn active" title="Wired Connected">
-              <div class="qs-icon">
-                <svg viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M8 2L3 6v6c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V6L8 2zm0 2l3 2.5V12H5V6.5L8 4z" />
-                </svg>
-              </div>
-              <span class="qs-label">Wired</span>
-            </button>
-            <button class="qs-btn" title="Bluetooth Off">
-              <div class="qs-icon">
-                <svg viewBox="0 0 16 16" fill="currentColor">
-                  <path
-                    d="M7.5 1v5.5L4.5 4l-.7.7L7.3 8 3.8 11.5l.7.7L7.5 9.5V15l5.5-3.5L8.5 8 13 4.5 7.5 1zm1 2.4l2.6 1.6L8.5 6.6V3.4zm0 9.2V9.4l2.6 1.6L8.5 12.6z" />
-                </svg>
-              </div>
-              <span class="qs-label">Bluetooth</span>
-            </button>
-            <button class="qs-btn" title="Power Mode: Balanced">
-              <div class="qs-icon">
-                <svg viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M5.5 1S5 1 5 1.5v2h6v-2S11 1 10.5 1h-5zM2 5v10h12V5H2zm2 2h8v6H4V7z" />
-                </svg>
-              </div>
-              <span class="qs-label">Power</span>
-            </button>
-            <button class="qs-btn" title="Dark Style">
-              <div class="qs-icon">
-                <svg viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M8 1a7 7 0 100 14A7 7 0 008 1zM2 8a6 6 0 016-6v12a6 6 0 01-6-6z" />
-                </svg>
-              </div>
-              <span class="qs-label">Dark Style</span>
-            </button>
-          </div>
-
-          <!-- Sliders -->
-          <div class="qs-sliders">
-            <div class="qs-slider-row">
-              <svg class="qs-slider-icon" viewBox="0 0 16 16" fill="currentColor">
-                <path
-                  d="M9 13c0 1.1-.9 2-2 2s-2-.9-2-2 2-4 2-4s2 2.9 2 4zm-2-9c1-1 2-1 2 1v6c0 1-1 1-2 1s-2 0-2-1V5c0-2 1-2 2-2z" />
-              </svg>
-              <div class="qs-slider-track">
-                <div class="qs-slider-fill" style="width: 75%"></div>
-              </div>
-            </div>
-            <div class="qs-slider-row">
-              <svg class="qs-slider-icon" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 1v2m0 10v2M1 8h2m10 0h2m-2.1-4.9l1.4-1.4M4.9 11.1L3.5 12.5m7.6 0l1.4-1.4M4.9 4.9L3.5 3.5" />
-              </svg>
-              <div class="qs-slider-track">
-                <div class="qs-slider-fill" style="width: 60%"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Wallpapers -->
-          <div class="menu-section">
-            <div class="menu-label">Background</div>
-            <div class="wallpaper-grid">
-              <button class="wp-preview wallpaper-ubuntu active" data-wallpaper="ubuntu" title="Ubuntu"></button>
-              <button class="wp-preview wallpaper-cosmic" data-wallpaper="cosmic" title="Cosmic"></button>
-              <button class="wp-preview wallpaper-midnight" data-wallpaper="midnight" title="Midnight"></button>
-              <button class="wp-preview wallpaper-forest" data-wallpaper="forest" title="Forest"></button>
-              <button class="wp-preview wallpaper-sunset" data-wallpaper="sunset" title="Sunset"></button>
-            </div>
-          </div>
-
-          <!-- Footer Actions -->
-          <div class="qs-footer">
-            <a href="/" class="qs-action-btn" title="Settings / Home">
-              <svg viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z" />
-              </svg>
-            </a>
-            <button class="qs-action-btn" title="Lock">
-              <svg viewBox="0 0 16 16" fill="currentColor">
-                <path d="M4 5v3h8V5a4 4 0 10-8 0zm6 3H6V5a2 2 0 114 0v3z" />
-              </svg>
-            </button>
-            <button id="power-off-btn" class="qs-action-btn" title="Power Off">
-              <svg viewBox="0 0 16 16" fill="currentColor">
-                <path
-                  d="M8 1v6h1V1H8zM4.5 3.5l.7.7A5 5 0 1013 8a5 5 0 00-2.8-4.5l-.4.9A4 4 0 118 12a4 4 0 01-2.8-6.8l.7-.7z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
+      <button id="system-btn" class="topbar-item topbar-system" aria-haspopup="true" aria-expanded="false">
+        <svg class="topbar-icon" viewBox="0 0 24 24">
+          <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5z" />
+          <path d="M4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+        </svg>
+        <svg class="topbar-icon" viewBox="0 0 24 24">
+          <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+        </svg>
+        <svg class="topbar-icon" viewBox="0 0 24 24">
+          <path
+            d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z" />
+        </svg>
+      </button>
     </div>
   </header>
 
-  <!-- ==================== LEFT DOCK ==================== -->
-  <nav class="dock" role="navigation" aria-label="Application Dock">
-    <div class="dock-items">
-      <button class="dock-item" data-window="about-window" aria-label="About">
-        <span class="dock-tooltip">About</span>
-        <img src="/assets/icons/document.svg" alt="" class="dock-icon">
-        <div class="dock-indicator"></div>
-      </button>
-
-      <button class="dock-item" data-window="now-window" aria-label="Now">
-        <span class="dock-tooltip">Now</span>
-        <img src="/assets/icons/clock.svg" alt="" class="dock-icon">
-        <div class="dock-indicator"></div>
-      </button>
-
-      <button class="dock-item" data-window="links-window" aria-label="Links">
-        <span class="dock-tooltip">Links</span>
-        <img src="/assets/icons/link.svg" alt="" class="dock-icon">
-        <div class="dock-indicator"></div>
-      </button>
-
-      <button class="dock-item" data-window="playground-window" aria-label="Playground">
-        <span class="dock-tooltip">Playground</span>
-        <img src="/assets/icons/grid.svg" alt="" class="dock-icon">
-        <div class="dock-indicator"></div>
-      </button>
-
-      <a href="/play/waste/" class="dock-item" aria-label="Waste Time">
-        <span class="dock-tooltip">Waste Time</span>
-        <img src="/assets/icons/gamepad.svg" alt="" class="dock-icon">
-        <div class="dock-indicator"></div>
-      </a>
+  <!-- ========== SYSTEM MENU POPUP ========== -->
+  <div id="system-menu" class="popup system-menu" role="menu" aria-label="System menu">
+    <div class="popup-section">
+      <div class="toggle-row">
+        <span>Wi-Fi</span>
+        <span class="toggle-status">Connected</span>
+      </div>
+      <div class="toggle-row">
+        <span>Bluetooth</span>
+        <span class="toggle-status">Off</span>
+      </div>
     </div>
-
-    <div class="dock-separator"></div>
-
-    <div class="dock-bottom">
-      <a href="/" class="dock-item" aria-label="Home">
-        <span class="dock-tooltip">Home</span>
-        <img src="/assets/icons/home.svg" alt="" class="dock-icon">
-        <div class="dock-indicator"></div>
-      </a>
+    <div class="popup-divider"></div>
+    <div class="popup-section volume-section">
+      <svg class="volume-icon" viewBox="0 0 24 24">
+        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
+      </svg>
+      <div class="slider">
+        <div class="slider-fill" style="width:75%"></div>
+      </div>
     </div>
-  </nav>
+    <div class="popup-divider"></div>
+    <div class="popup-section wallpaper-section">
+      <div class="section-label">Wallpaper</div>
+      <div class="wallpaper-row">
+        <button class="wp-btn wp-ubuntu active" data-wp="ubuntu" title="Ubuntu"></button>
+        <button class="wp-btn wp-cosmic" data-wp="cosmic" title="Cosmic"></button>
+        <button class="wp-btn wp-forest" data-wp="forest" title="Forest"></button>
+      </div>
+    </div>
+    <div class="popup-divider"></div>
+    <div class="popup-footer">
+      <a href="/" class="popup-action" title="Home">
+        <svg viewBox="0 0 24 24">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+      </a>
+      <button class="popup-action" title="Settings">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.11-.2-.37-.27-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.44.17-.48.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.05-.48.02-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.11.2.37.27.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.04.24.24.41.48.41h3.84c.24 0 .44-.17.48-.41l.36-2.54c.59-.24 1.13-.57 1.62-.94l2.39.96c.22.05.48-.02.59-.22l1.92-3.32c.12-.21.08-.47-.12-.61l-2.03-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+        </svg>
+      </button>
+      <button class="popup-action" title="Power Off">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z" />
+        </svg>
+      </button>
+    </div>
+  </div>
 
-  <!-- ==================== ACTIVITIES OVERLAY ==================== -->
+  <!-- ========== CALENDAR POPUP ========== -->
+  <div id="calendar-popup" class="popup calendar-popup" role="dialog" aria-label="Calendar">
+    <div class="calendar-header">
+      <div class="calendar-title" id="calendar-title">Saturday</div>
+      <div class="calendar-date" id="calendar-date">January 3, 2026</div>
+    </div>
+    <div class="calendar-grid">
+      <div class="cal-header">
+        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+      <div id="calendar-days" class="cal-days"></div>
+    </div>
+  </div>
+
+  <!-- ========== ACTIVITIES OVERLAY ========== -->
   <div id="activities-overlay" class="activities-overlay" role="dialog" aria-modal="true" aria-label="Activities">
     <div class="activities-search">
-      <input type="text" placeholder="Type to search..." aria-label="Search applications">
+      <input type="search" placeholder="Type to search..." aria-label="Search applications" id="activities-search">
     </div>
-    <div class="app-grid">
-      <button class="app-grid-item" data-window="about-window">
-        <img src="/assets/icons/document.svg" alt="" class="app-grid-icon">
-        <span class="app-grid-label">About</span>
+    <div class="app-grid" id="app-grid">
+      <button class="app-item" data-window="about-window">
+        <img src="/assets/icons/document.svg" alt="" class="app-icon">
+        <span class="app-label">About</span>
       </button>
-      <button class="app-grid-item" data-window="now-window">
-        <img src="/assets/icons/clock.svg" alt="" class="app-grid-icon">
-        <span class="app-grid-label">Now</span>
+      <button class="app-item" data-window="now-window">
+        <img src="/assets/icons/clock.svg" alt="" class="app-icon">
+        <span class="app-label">Now</span>
       </button>
-      <button class="app-grid-item" data-window="links-window">
-        <img src="/assets/icons/link.svg" alt="" class="app-grid-icon">
-        <span class="app-grid-label">Links</span>
+      <button class="app-item" data-window="links-window">
+        <img src="/assets/icons/link.svg" alt="" class="app-icon">
+        <span class="app-label">Links</span>
       </button>
-      <button class="app-grid-item" data-window="playground-window">
-        <img src="/assets/icons/grid.svg" alt="" class="app-grid-icon">
-        <span class="app-grid-label">Playground</span>
+      <button class="app-item" data-window="playground-window">
+        <img src="/assets/icons/grid.svg" alt="" class="app-icon">
+        <span class="app-label">Playground</span>
       </button>
-      <a href="/play/waste/" class="app-grid-item">
-        <img src="/assets/icons/gamepad.svg" alt="" class="app-grid-icon">
-        <span class="app-grid-label">Waste Time</span>
+      <a href="/play/waste/" class="app-item">
+        <img src="/assets/icons/gamepad.svg" alt="" class="app-icon">
+        <span class="app-label">Waste Time</span>
       </a>
-      <a href="/" class="app-grid-item">
-        <img src="/assets/icons/home.svg" alt="" class="app-grid-icon">
-        <span class="app-grid-label">Home</span>
+      <a href="/" class="app-item">
+        <img src="/assets/icons/home.svg" alt="" class="app-icon">
+        <span class="app-label">Home</span>
       </a>
     </div>
   </div>
 
-  <!-- ==================== DESKTOP AREA ==================== -->
-  <main id="desktop" class="desktop">
-    <!-- Context Menu -->
-    <div id="context-menu" class="context-menu" role="menu">
-      <button class="context-item">New Folder</button>
-      <div class="context-sep"></div>
-      <button class="context-item">Paste</button>
-      <div class="context-sep"></div>
-      <button class="context-item">Select All</button>
-      <div class="context-sep"></div>
-      <button class="context-item">Open in Terminal</button>
-      <button class="context-item">Change Background...</button>
-      <div class="context-sep"></div>
-      <button class="context-item">Display Settings</button>
-      <button class="context-item">Settings</button>
+  <!-- ========== LEFT DOCK (Ubuntu Dock) ========== -->
+  <nav class="dock" role="navigation" aria-label="Application dock">
+    <div class="dock-apps">
+      <button class="dock-item" data-window="about-window" aria-label="About" tabindex="0">
+        <img src="/assets/icons/document.svg" alt="" class="dock-icon">
+        <span class="dock-indicator"></span>
+        <span class="dock-tooltip">About</span>
+      </button>
+      <button class="dock-item" data-window="now-window" aria-label="Now" tabindex="0">
+        <img src="/assets/icons/clock.svg" alt="" class="dock-icon">
+        <span class="dock-indicator"></span>
+        <span class="dock-tooltip">Now</span>
+      </button>
+      <button class="dock-item" data-window="links-window" aria-label="Links" tabindex="0">
+        <img src="/assets/icons/link.svg" alt="" class="dock-icon">
+        <span class="dock-indicator"></span>
+        <span class="dock-tooltip">Links</span>
+      </button>
+      <button class="dock-item" data-window="playground-window" aria-label="Playground" tabindex="0">
+        <img src="/assets/icons/grid.svg" alt="" class="dock-icon">
+        <span class="dock-indicator"></span>
+        <span class="dock-tooltip">Playground</span>
+      </button>
+      <a href="/play/waste/" class="dock-item" aria-label="Waste Time" tabindex="0">
+        <img src="/assets/icons/gamepad.svg" alt="" class="dock-icon">
+        <span class="dock-indicator"></span>
+        <span class="dock-tooltip">Waste Time</span>
+      </a>
     </div>
+    <div class="dock-separator"></div>
+    <div class="dock-bottom">
+      <a href="/" class="dock-item" aria-label="Home" tabindex="0">
+        <img src="/assets/icons/home.svg" alt="" class="dock-icon">
+        <span class="dock-indicator"></span>
+        <span class="dock-tooltip">Home</span>
+      </a>
+    </div>
+  </nav>
 
-    <!-- ==================== WINDOWS (Moved Inside Desktop) ==================== -->
-
-    <!-- About Window -->
-    <div id="about-window" class="window" role="dialog" aria-labelledby="about-title" aria-modal="true">
-      <div class="window-header">
-        <div class="window-header-left"></div>
+  <!-- ========== DESKTOP AREA ========== -->
+  <main id="desktop" class="desktop">
+    <!-- Windows -->
+    <article id="about-window" class="window" role="dialog" aria-labelledby="about-title" tabindex="-1">
+      <header class="window-header">
         <span class="window-title" id="about-title">About</span>
         <div class="window-controls">
-          <button class="window-btn close-btn" aria-label="Close">
-            <svg viewBox="0 0 16 16" fill="currentColor">
-              <path d="M4.5 3.5l7 7m0-7l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          <button class="window-close" aria-label="Close" type="button">
+            <svg viewBox="0 0 12 12">
+              <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
             </svg>
           </button>
         </div>
-      </div>
-      <div class="window-content">
+      </header>
+      <div class="window-body">
         <p>Hi, I'm termnh.</p>
         <p>This is my personal site.</p>
         <p>I make small tools and random experiments.</p>
       </div>
-    </div>
+    </article>
 
-    <!-- Now Window -->
-    <div id="now-window" class="window" role="dialog" aria-labelledby="now-title" aria-modal="true">
-      <div class="window-header">
-        <div class="window-header-left"></div>
+    <article id="now-window" class="window" role="dialog" aria-labelledby="now-title" tabindex="-1">
+      <header class="window-header">
         <span class="window-title" id="now-title">Now</span>
         <div class="window-controls">
-          <button class="window-btn close-btn" aria-label="Close">
-            <svg viewBox="0 0 16 16" fill="currentColor">
-              <path d="M4.5 3.5l7 7m0-7l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          <button class="window-close" aria-label="Close" type="button">
+            <svg viewBox="0 0 12 12">
+              <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
             </svg>
           </button>
         </div>
-      </div>
-      <div class="window-content">
+      </header>
+      <div class="window-body">
         <p>Currently working on a few small things.</p>
         <p>Learning as I go.</p>
-        <p class="meta-text">Last updated: 2026-01-03</p>
+        <p class="meta">Last updated: 2026-01-03</p>
       </div>
-    </div>
+    </article>
 
-    <!-- Links Window -->
-    <div id="links-window" class="window" role="dialog" aria-labelledby="links-title" aria-modal="true">
-      <div class="window-header">
-        <div class="window-header-left"></div>
+    <article id="links-window" class="window" role="dialog" aria-labelledby="links-title" tabindex="-1">
+      <header class="window-header">
         <span class="window-title" id="links-title">Links</span>
         <div class="window-controls">
-          <button class="window-btn close-btn" aria-label="Close">
-            <svg viewBox="0 0 16 16" fill="currentColor">
-              <path d="M4.5 3.5l7 7m0-7l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          <button class="window-close" aria-label="Close" type="button">
+            <svg viewBox="0 0 12 12">
+              <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
             </svg>
           </button>
         </div>
-      </div>
-      <div class="window-content">
+      </header>
+      <div class="window-body">
         <p><strong>GitHub:</strong> <a href="https://github.com/termn0xh" target="_blank" rel="noopener">termn0xh</a>
         </p>
         <p><strong>Email:</strong> <a href="mailto:hi@termnh.com">hi@termnh.com</a></p>
       </div>
-    </div>
+    </article>
 
-    <!-- Playground Window -->
-    <div id="playground-window" class="window" role="dialog" aria-labelledby="playground-title" aria-modal="true">
-      <div class="window-header">
-        <div class="window-header-left"></div>
+    <article id="playground-window" class="window" role="dialog" aria-labelledby="playground-title" tabindex="-1">
+      <header class="window-header">
         <span class="window-title" id="playground-title">Playground</span>
         <div class="window-controls">
-          <button class="window-btn close-btn" aria-label="Close">
-            <svg viewBox="0 0 16 16" fill="currentColor">
-              <path d="M4.5 3.5l7 7m0-7l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          <button class="window-close" aria-label="Close" type="button">
+            <svg viewBox="0 0 12 12">
+              <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
             </svg>
           </button>
         </div>
-      </div>
-      <div class="window-content">
+      </header>
+      <div class="window-body">
         <p><a href="/play/waste/">Waste your time →</a></p>
-        <p class="meta-text">More later.</p>
+        <p class="meta">More later.</p>
       </div>
-    </div>
+    </article>
   </main>
 
-  <script src="/assets/js/desktop.js?v=5"></script>
+  <script src="/assets/js/desktop.js?v=7"></script>
 </body>
 
 </html>
