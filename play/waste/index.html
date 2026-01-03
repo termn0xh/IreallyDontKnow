@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Waste Your Time — termnh playground</title>
+    <meta name="description"
+        content="A game about doing nothing. Balance effort and boredom while avoiding responsibilities.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="ui-layer">
+            <div id="game-ui" class="hidden">
+                <div id="top-left">
+                    <div id="score-display">Time Wasted: 0s</div>
+                    <div id="coin-display"
+                        style="color: #fdcb6e; font-size: 18px; margin-bottom: 10px; text-shadow: 2px 2px 0 #000;">
+                        Coins: 0</div>
+                    <div id="high-score-display">Best: 0s</div>
+                </div>
+
+                <div id="meters">
+                    <div class="meter-container">
+                        <label>EFFORT</label>
+                        <div class="meter-bar">
+                            <div id="effort-fill" class="fill"></div>
+                        </div>
+                    </div>
+                    <div class="meter-container">
+                        <label>BOREDOM</label>
+                        <div class="meter-bar">
+                            <div id="boredom-fill" class="fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-over-screen" class="hidden">
+                <h1 id="death-reason">YOU TRIED TOO HARD</h1>
+                <p>You wasted <span id="final-score">0</span> seconds.</p>
+                <div class="button-row">
+                    <button id="restart-btn">Waste More time</button>
+                    <button id="menu-btn">Main Menu</button>
+                </div>
+            </div>
+
+            <div id="main-menu">
+                <h1 class="title">WASTE YOUR TIME</h1>
+                <p class="subtitle">The Game About Doing Nothing</p>
+                <div class="instructions">
+                    <p>TAP, or ARROWS to Move</p>
+                    <p>Moving raises EFFORT</p>
+                    <p>Standing still raises BOREDOM</p>
+                    <p>Avoid Responsibilities</p>
+                </div>
+                <button id="start-btn" class="big-btn">PLAY</button>
+                <div class="credits">by <a href="/" style="color: #81ecec; text-decoration: none;">termnh</a></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
