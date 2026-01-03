@@ -1,99 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>termnh — building things</title>
-  <meta name="description" content="I'm termnh. I build things—tools, experiments, and whatever I'm obsessed with lately.">
-  
+  <title>termnh</title>
+  <meta name="description" content="I'm termnh. I build things—tools, experiments, and whatever I'm obsessed with.">
+
   <!-- Open Graph -->
-  <meta property="og:title" content="termnh — building things">
-  <meta property="og:description" content="I build things—tools, experiments, and whatever I'm obsessed with lately.">
+  <meta property="og:title" content="termnh">
+  <meta property="og:description" content="I build things—tools, experiments, and whatever I'm obsessed with.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://termnh.com">
-  
+
   <!-- Twitter -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="termnh — building things">
-  <meta name="twitter:description" content="I build things—tools, experiments, and whatever I'm obsessed with lately.">
-  
+  <meta name="twitter:title" content="termnh">
+  <meta name="twitter:description" content="I build things—tools, experiments, and whatever I'm obsessed with.">
+
   <!-- Favicon -->
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
+
 <body>
-  <a href="#main" class="skip-link">Skip to main content</a>
-  
-  <nav class="nav" role="navigation" aria-label="Main navigation">
-    <div class="container">
-      <a href="/" class="nav-logo">termnh<span>.</span></a>
-      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 12h18M3 6h18M3 18h18"/>
-        </svg>
-      </button>
-      <ul class="nav-links">
-        <li><a href="/" class="active">Home</a></li>
-        <li><a href="/pages/projects.html">Projects</a></li>
-        <li><a href="/pages/playground.html">Playground</a></li>
-        <li><a href="/pages/now.html">Now</a></li>
-        <li><a href="/pages/links.html">Links</a></li>
-      </ul>
-    </div>
-  </nav>
-  
-  <main id="main">
-    <div class="container">
-      <section class="hero">
-        <p class="hero-greeting">Hey, I'm</p>
-        <h1 class="hero-name">termnh</h1>
-        <p class="hero-bio">I build things—tools, experiments, and whatever I'm obsessed with lately.</p>
-        <p class="hero-status">Currently tinkering with game dev, networking, and weird side projects.</p>
-        
-        <div class="cta-group">
-          <a href="/pages/projects.html" class="btn btn-primary">See my work</a>
-          <a href="/play/waste/" class="btn">Waste some time →</a>
-        </div>
-      </section>
-      
-      <section class="section">
-        <div class="section-header">
-          <h2 class="section-title">Recent Projects</h2>
-          <a href="/pages/projects.html">View all →</a>
-        </div>
-        <div class="card-grid" id="projects-container">
-          <!-- Loaded from projects.json -->
-        </div>
-      </section>
-      
-      <section class="section">
-        <div class="section-header">
-          <h2 class="section-title">Playground</h2>
-          <a href="/pages/playground.html">Explore →</a>
-        </div>
-        <div class="card-grid" id="playground-container">
-          <!-- Loaded from playground.json -->
-        </div>
-      </section>
-    </div>
+  <a href="#desktop" class="skip-link">Skip to desktop</a>
+
+  <!-- Desktop with Icons -->
+  <main id="desktop" class="desktop" role="main" aria-label="Desktop">
+
+    <!-- About Icon -->
+    <button class="icon" data-window="about-window" aria-label="Open About">
+      <div class="icon-img">📄</div>
+      <span class="icon-label">About.txt</span>
+    </button>
+
+    <!-- Now Icon -->
+    <button class="icon" data-window="now-window" aria-label="Open Now">
+      <div class="icon-img">📌</div>
+      <span class="icon-label">Now</span>
+    </button>
+
+    <!-- Links Icon -->
+    <button class="icon" data-window="links-window" aria-label="Open Links">
+      <div class="icon-img">🔗</div>
+      <span class="icon-label">Links</span>
+    </button>
+
+    <!-- Playground Icon -->
+    <button class="icon" data-window="playground-window" aria-label="Open Playground">
+      <div class="icon-img">🎮</div>
+      <span class="icon-label">Playground</span>
+    </button>
+
   </main>
-  
-  <footer class="footer">
-    <div class="container">
-      <p class="footer-text">© 2025 termnh</p>
-      <div class="footer-links">
-        <a href="https://github.com/termn0xh" target="_blank" rel="noopener">GitHub</a>
-        <a href="/pages/links.html">Contact</a>
+
+  <!-- Overlay for mobile -->
+  <div id="overlay" class="overlay" aria-hidden="true"></div>
+
+  <!-- About Window -->
+  <div id="about-window" class="window" role="dialog" aria-labelledby="about-title" aria-modal="true">
+    <div class="window-titlebar">
+      <span class="window-title" id="about-title">About.txt</span>
+      <div class="window-controls">
+        <button class="window-close" aria-label="Close window"></button>
       </div>
     </div>
+    <div class="window-content">
+      <h2>Hey, I'm termnh.</h2>
+      <p>I build things—tools, experiments, and whatever I'm obsessed with lately.</p>
+      <p>I like making stuff that's fun, useful, or just interesting to figure out. Sometimes it ships, sometimes it
+        doesn't. Either way, I'm probably learning something.</p>
+      <ul>
+        <li>Game dev & interactive stuff</li>
+        <li>Networking & systems</li>
+        <li>Random experiments</li>
+      </ul>
+      <p class="meta-text">// feel free to poke around</p>
+    </div>
+  </div>
+
+  <!-- Now Window -->
+  <div id="now-window" class="window" role="dialog" aria-labelledby="now-title" aria-modal="true">
+    <div class="window-titlebar">
+      <span class="window-title" id="now-title">Now</span>
+      <div class="window-controls">
+        <button class="window-close" aria-label="Close window"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <h2>What I'm up to</h2>
+      <ul>
+        <li>Tinkering with game dev</li>
+        <li>Learning networking fundamentals</li>
+        <li>Building random side projects</li>
+        <li>Shipping weird stuff on the web</li>
+      </ul>
+      <p class="meta-text">Last updated: January 2025</p>
+    </div>
+  </div>
+
+  <!-- Links Window -->
+  <div id="links-window" class="window" role="dialog" aria-labelledby="links-title" aria-modal="true">
+    <div class="window-titlebar">
+      <span class="window-title" id="links-title">Links</span>
+      <div class="window-controls">
+        <button class="window-close" aria-label="Close window"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <h2>Find me</h2>
+      <div class="links-grid">
+        <a href="https://github.com/termn0xh" target="_blank" rel="noopener" class="link-item">
+          <span class="link-icon">💻</span>
+          <span>GitHub</span>
+        </a>
+        <a href="https://t.me/termnh" target="_blank" rel="noopener" class="link-item">
+          <span class="link-icon">✈️</span>
+          <span>Telegram</span>
+        </a>
+        <a href="https://discord.com/users/termnh" target="_blank" rel="noopener" class="link-item">
+          <span class="link-icon">🎧</span>
+          <span>Discord</span>
+        </a>
+        <a href="mailto:hello&#64;termnh&#46;com" class="link-item">
+          <span class="link-icon">📧</span>
+          <span>Email</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Playground Window -->
+  <div id="playground-window" class="window" role="dialog" aria-labelledby="playground-title" aria-modal="true">
+    <div class="window-titlebar">
+      <span class="window-title" id="playground-title">Playground</span>
+      <div class="window-controls">
+        <button class="window-close" aria-label="Close window"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <h2>Fun stuff</h2>
+      <a href="/play/waste/" class="playground-item">
+        <span class="emoji">⏰</span>
+        <div>
+          <strong>Waste Your Time</strong>
+          <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-muted);">The game about doing nothing</p>
+        </div>
+      </a>
+      <p class="meta-text">// more experiments coming</p>
+    </div>
+  </div>
+
+  <!-- Taskbar -->
+  <footer class="taskbar">
+    <span>termnh.com</span>
   </footer>
-  
+
   <script src="/assets/js/main.js"></script>
 </body>
+
 </html>

@@ -1,87 +1,78 @@
 # termnh.com
 
-Personal site + lab/playground. Static, fast, no build step.
+Personal desktop-style homepage. Click icons, drag windows, explore.
 
 ## Structure
 
 ```
 /
-├── index.html              # Homepage
-├── CNAME                   # Custom domain config
-├── sitemap.xml             # SEO sitemap
-├── robots.txt              # SEO robots
-├── favicon.ico             # Favicon
+├── index.html              # Desktop homepage
 ├── assets/
-│   ├── css/style.css       # Design system
-│   └── js/main.js          # Shared JavaScript
-├── data/
-│   ├── projects.json       # Project data
-│   └── playground.json     # Playground items
-├── pages/
-│   ├── projects.html       # Projects gallery
-│   ├── playground.html     # Fun experiments
-│   ├── now.html            # What I'm up to
-│   └── links.html          # Socials + contact
-└── play/
-    └── waste/              # "Waste Your Time" game
-        ├── index.html
-        ├── style.css
-        └── script.js
+│   ├── css/style.css       # Styles
+│   └── js/main.js          # Window manager logic
+├── play/
+│   └── waste/              # "Waste Your Time" game
+├── CNAME                   # Custom domain
+├── favicon.ico
+├── robots.txt
+└── sitemap.xml
 ```
 
-## How to Update
+## URL Paths
 
-### Projects
+| URL | What it is |
+|-----|------------|
+| `/` | Desktop homepage |
+| `/play/waste/` | Waste Your Time game |
 
-Edit `data/projects.json`:
+## How to Edit Content
 
-```json
-{
-  "name": "Project Name",
-  "description": "Short description",
-  "tags": ["tag1", "tag2"],
-  "github": "https://github.com/...",
-  "url": "optional-live-link"
-}
-```
+All content is in `index.html`:
 
-### Playground
+### About Window
+Find `id="about-window"` and edit the content inside `.window-content`.
 
-Edit `data/playground.json`:
+### Now Window
+Find `id="now-window"` and update:
+- The `<li>` items for current activities
+- The "Last updated" date in `.meta-text`
 
-```json
-{
-  "name": "Experiment Name",
-  "description": "What it does",
-  "url": "/path/to/experiment/",
-  "emoji": "🎮",
-  "featured": true
-}
-```
+### Links Window
+Find `id="links-window"` and edit the `<a class="link-item">` elements.
 
-### Now Page
+### Playground Window
+Find `id="playground-window"` and add/edit `<a class="playground-item">` elements.
 
-Edit `pages/now.html` directly. Update the `Last updated:` date when you make changes.
+## Adding New Playground Pages
 
-### Adding New Playground Items
-
-1. Create a new directory in `/play/` (e.g., `/play/newgame/`)
+1. Create a folder in `/play/` (e.g., `/play/newgame/`)
 2. Add your HTML/CSS/JS files
-3. Add an entry to `data/playground.json`
+3. Add a link in the Playground window:
+
+```html
+<a href="/play/newgame/" class="playground-item">
+  <span class="emoji">🎲</span>
+  <div>
+    <strong>Game Name</strong>
+    <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-muted);">Description</p>
+  </div>
+</a>
+```
 
 ## Local Development
 
-Just open `index.html` in a browser. For full functionality (JSON loading), use a local server:
+Open `index.html` in a browser. For best results, use a local server:
 
 ```bash
-python -m http.server 8000
-# or
-npx serve
+python3 -m http.server 8080
 ```
 
-## Deployment
+## Keyboard Navigation
 
-Hosted on GitHub Pages. Push to `main` to deploy.
+- **Tab**: Navigate between icons
+- **Enter/Space**: Open window
+- **Escape**: Close active window
+- **Tab** (in window): Cycle through focusable elements
 
 ---
 
