@@ -1,6 +1,5 @@
 /**
- * Ubuntu GNOME Desktop UI
- * Handles Activities overlay, window management, dock interactions, and system menu
+ * Ubuntu GNOME Desktop UI - High Fidelity Logic
  */
 
 (function () {
@@ -13,6 +12,8 @@
         zIndex: 100,
         activitiesOpen: false,
         systemMenuOpen: false,
+        calendarOpen: false,
+        contextMenuOpen: false,
         dragState: null
     };
 
@@ -22,210 +23,257 @@
     function cacheElements() {
         elements.activitiesBtn = document.getElementById('activities-btn');
         elements.activitiesOverlay = document.getElementById('activities-overlay');
+
+        elements.clockBtn = document.getElementById('clock-btn');
+        elements.calendarDropdown = document.getElementById('calendar-dropdown');
+
         elements.systemTrayBtn = document.getElementById('system-tray-btn');
         elements.systemDropdown = document.getElementById('system-dropdown');
-        elements.clock = document.getElementById('clock');
+
+        elements.contextMenu = document.getElementById('context-menu');
+
         elements.desktop = document.getElementById('desktop');
         elements.dock = document.querySelector('.dock');
-        elements.dockItems = document.querySelectorAll('.dock-item[data-window]');
-        elements.appGridItems = document.querySelectorAll('.app-grid-item[data-window]');
         elements.windows = document.querySelectorAll('.window');
-        elements.wallpaperOptions = document.querySelectorAll('.wallpaper-option');
+
+        elements.clock = document.getElementById('clock');
+
+        // Feature toggles
+        elements.qsBtns = document.querySelectorAll('.qs-btn');
+        elements.wpPreviews = document.querySelectorAll('.wp-preview');
     }
 
-    // ==================== CLOCK ====================
-    function updateClock() {
+    // ==================== DATE & TIME ====================
+    function updateTime() {
         const now = new Date();
-        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const day = days[now.getDay()];
-        const hours = now.getHours().toString().padStart(2, '0');
+        // Format: "Jan 3 16:00" or similar Ubuntu style
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const month = months[now.getMonth()];
+        const date = now.getDate();
+        const hours = now.getHours();
         const minutes = now.getMinutes().toString().padStart(2, '0');
-        elements.clock.textContent = `${day} ${hours}:${minutes}`;
+
+        elements.clock.textContent = `${month} ${date} ${hours}:${minutes}`;
     }
 
-    // ==================== ACTIVITIES OVERLAY ====================
-    function openActivities() {
-        state.activitiesOpen = true;
-        elements.activitiesOverlay.classList.add('active');
-        elements.activitiesBtn.classList.add('active');
-        elements.activitiesBtn.setAttribute('aria-expanded', 'true');
-        // Focus search input
-        const searchInput = elements.activitiesOverlay.querySelector('input');
-        if (searchInput) {
-            setTimeout(() => searchInput.focus(), 100);
-        }
-    }
+    // ==================== MENUS & OVERLAYS ====================
 
-    function closeActivities() {
-        state.activitiesOpen = false;
-        elements.activitiesOverlay.classList.remove('active');
-        elements.activitiesBtn.classList.remove('active');
-        elements.activitiesBtn.setAttribute('aria-expanded', 'false');
+    function closeAllMenus() {
+        if (state.activitiesOpen) toggleActivities();
+        if (state.systemMenuOpen) toggleSystemMenu();
+        if (state.calendarOpen) toggleCalendar();
+        if (state.contextMenuOpen) closeContextMenu();
     }
 
     function toggleActivities() {
+        state.activitiesOpen = !state.activitiesOpen;
+        elements.activitiesOverlay.classList.toggle('active', state.activitiesOpen);
+        elements.activitiesBtn.classList.toggle('active', state.activitiesOpen);
+
         if (state.activitiesOpen) {
-            closeActivities();
-        } else {
-            closeSystemMenu();
-            openActivities();
+            if (state.systemMenuOpen) toggleSystemMenu();
+            if (state.calendarOpen) toggleCalendar();
+            if (state.contextMenuOpen) closeContextMenu();
+            // Focus search
+            const input = elements.activitiesOverlay.querySelector('input');
+            if (input) setTimeout(() => input.focus(), 50);
         }
-    }
-
-    // ==================== SYSTEM MENU ====================
-    function openSystemMenu() {
-        state.systemMenuOpen = true;
-        elements.systemDropdown.classList.add('active');
-        elements.systemTrayBtn.setAttribute('aria-expanded', 'true');
-    }
-
-    function closeSystemMenu() {
-        state.systemMenuOpen = false;
-        elements.systemDropdown.classList.remove('active');
-        elements.systemTrayBtn.setAttribute('aria-expanded', 'false');
     }
 
     function toggleSystemMenu() {
+        state.systemMenuOpen = !state.systemMenuOpen;
+        elements.systemDropdown.classList.toggle('active', state.systemMenuOpen);
+        elements.systemTrayBtn.classList.toggle('active', state.systemMenuOpen);
+        elements.aboutWindow?.classList.remove('focused'); // unfocus windows
+
         if (state.systemMenuOpen) {
-            closeSystemMenu();
-        } else {
-            closeActivities();
-            openSystemMenu();
+            if (state.activitiesOpen) toggleActivities();
+            if (state.calendarOpen) toggleCalendar();
+            if (state.contextMenuOpen) closeContextMenu();
         }
     }
 
-    // ==================== WALLPAPER ====================
+    function toggleCalendar() {
+        state.calendarOpen = !state.calendarOpen;
+        elements.calendarDropdown.classList.toggle('active', state.calendarOpen);
+        elements.clockBtn.classList.toggle('active', state.calendarOpen);
+
+        if (state.calendarOpen) {
+            if (state.activitiesOpen) toggleActivities();
+            if (state.systemMenuOpen) toggleSystemMenu();
+            if (state.contextMenuOpen) closeContextMenu();
+        }
+    }
+
+    function openContextMenu(x, y) {
+        closeAllMenus();
+        state.contextMenuOpen = true;
+
+        // Bounds check
+        const menuWidth = 200;
+        const menuHeight = 280;
+        const winWidth = window.innerWidth;
+        const winHeight = window.innerHeight;
+
+        if (x + menuWidth > winWidth) x = winWidth - menuWidth - 5;
+        if (y + menuHeight > winHeight) y = winHeight - menuHeight - 5;
+
+        elements.contextMenu.style.left = `${x}px`;
+        elements.contextMenu.style.top = `${y}px`;
+        elements.contextMenu.classList.add('active');
+    }
+
+    function closeContextMenu() {
+        state.contextMenuOpen = false;
+        elements.contextMenu.classList.remove('active');
+    }
+
+    // ==================== QUICK SETTINGS LOGIC ====================
+    function initQuickSettings() {
+        elements.qsBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); // prevent menu close
+                btn.classList.toggle('active');
+                // Visual feedback only
+            });
+        });
+
+        elements.wpPreviews.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const theme = btn.dataset.wallpaper;
+                setWallpaper(theme);
+                elements.wpPreviews.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+    }
+
     function setWallpaper(name) {
         document.body.className = `wallpaper-${name}`;
         localStorage.setItem('termnh-wallpaper', name);
-
-        // Update selected state
-        elements.wallpaperOptions.forEach(opt => {
-            opt.classList.toggle('selected', opt.dataset.wallpaper === name);
-        });
-    }
-
-    function loadWallpaper() {
-        const saved = localStorage.getItem('termnh-wallpaper') || 'ubuntu';
-        setWallpaper(saved);
     }
 
     // ==================== WINDOWS ====================
-    function initWindow(windowEl) {
-        const id = windowEl.id;
-        state.windows[id] = {
-            el: windowEl,
-            isOpen: false,
-            position: null
-        };
+    function initWindows() {
+        elements.windows.forEach(win => {
+            state.windows[win.id] = { el: win, isOpen: false, position: null };
+
+            // Dragging
+            const header = win.querySelector('.window-header');
+            header.addEventListener('mousedown', (e) => {
+                if (!e.target.closest('.window-controls')) {
+                    startDrag(e, win.id);
+                }
+            });
+            header.addEventListener('touchstart', (e) => {
+                if (!e.target.closest('.window-controls')) {
+                    startDrag(e, win.id);
+                }
+            }, { passive: false });
+
+            // Focus on click
+            win.addEventListener('mousedown', () => focusWindow(win.id));
+
+            // Close button
+            const closeBtn = win.querySelector('.close-btn');
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeWindow(win.id);
+            });
+        });
     }
 
-    function openWindow(windowId) {
-        const win = state.windows[windowId];
+    function openWindow(id) {
+        const win = state.windows[id];
         if (!win) return;
+
+        // Reset animation classes
+        win.el.classList.remove('closing');
 
         if (!win.isOpen) {
             win.isOpen = true;
-            win.el.classList.add('open');
+            win.el.style.display = 'flex'; // triggers flex layout
+            setTimeout(() => win.el.classList.add('open'), 10); // trigger animation
 
-            // Position window if not already positioned
+            // Center if no position
             if (!win.position) {
-                const desktop = elements.desktop;
-                const rect = desktop.getBoundingClientRect();
-                const winWidth = 420;
-                const winHeight = 280;
-                const x = Math.max(20, (rect.width - winWidth) / 2);
-                const y = Math.max(20, (rect.height - winHeight) / 3);
-
-                win.position = { x, y };
-                win.el.style.left = `${x}px`;
-                win.el.style.top = `${y}px`;
-                win.el.style.width = `${winWidth}px`;
-                win.el.style.height = `${winHeight}px`;
+                const dRect = elements.desktop.getBoundingClientRect();
+                const w = 400; const h = 300;
+                win.position = {
+                    x: Math.max(20, (dRect.width - w) / 2),
+                    y: Math.max(40, (dRect.height - h) / 2 - 50)
+                };
+                win.el.style.width = `${w}px`;
+                win.el.style.height = `${h}px`;
+                win.el.style.left = `${win.position.x}px`;
+                win.el.style.top = `${win.position.y}px`;
             }
-
-            // Update dock indicator
-            updateDockIndicators();
         }
 
-        focusWindow(windowId);
-        closeActivities();
+        focusWindow(id);
+        closeAllMenus();
+        updateDock();
     }
 
-    function closeWindow(windowId) {
-        const win = state.windows[windowId];
-        if (!win) return;
-
-        win.isOpen = false;
-        win.el.classList.remove('open', 'focused');
-
-        // Update state
-        if (state.focusedWindow === windowId) {
-            state.focusedWindow = null;
-        }
-
-        updateDockIndicators();
-    }
-
-    function focusWindow(windowId) {
-        const win = state.windows[windowId];
+    function closeWindow(id) {
+        const win = state.windows[id];
         if (!win || !win.isOpen) return;
 
-        // Unfocus previous
-        if (state.focusedWindow && state.focusedWindow !== windowId) {
-            const prevWin = state.windows[state.focusedWindow];
-            if (prevWin) {
-                prevWin.el.classList.remove('focused');
-            }
-        }
+        win.isOpen = false;
+        win.el.classList.remove('open');
+        win.el.classList.add('closing');
 
-        // Focus current
-        state.focusedWindow = windowId;
-        state.zIndex++;
-        win.el.style.zIndex = state.zIndex;
-        win.el.classList.add('focused');
+        // Wait for animation
+        setTimeout(() => {
+            win.el.classList.remove('closing');
+            win.el.style.display = 'none';
+        }, 200);
 
-        updateDockIndicators();
+        if (state.focusedWindow === id) state.focusedWindow = null;
+        updateDock();
     }
 
-    function updateDockIndicators() {
-        elements.dockItems.forEach(item => {
-            const windowId = item.dataset.window;
-            const win = state.windows[windowId];
+    function focusWindow(id) {
+        state.focusedWindow = id;
+        state.zIndex++;
+        // Lower others
+        Object.values(state.windows).forEach(w => w.el.classList.remove('focused'));
+
+        const win = state.windows[id];
+        win.el.classList.add('focused');
+        win.el.style.zIndex = state.zIndex;
+        updateDock();
+    }
+
+    function updateDock() {
+        document.querySelectorAll('.dock-item[data-window]').forEach(item => {
+            const id = item.dataset.window;
+            const win = state.windows[id];
 
             item.classList.remove('active', 'focused');
-
             if (win && win.isOpen) {
                 item.classList.add('active');
-                if (state.focusedWindow === windowId) {
-                    item.classList.add('focused');
-                }
+                if (state.focusedWindow === id) item.classList.add('focused');
             }
         });
     }
 
-    // ==================== WINDOW DRAGGING ====================
-    function startDrag(e, windowId) {
-        const win = state.windows[windowId];
-        if (!win) return;
-
-        // Check if mobile (no drag on mobile)
-        if (window.innerWidth <= 768) return;
-
+    // ==================== DRAGGING ====================
+    function startDrag(e, id) {
+        // Basic drag logic (simplified for implementation plan speed)
+        const win = state.windows[id];
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
         const rect = win.el.getBoundingClientRect();
+        const dRect = elements.desktop.getBoundingClientRect();
 
         state.dragState = {
-            windowId,
-            startX: clientX,
-            startY: clientY,
+            id,
             offsetX: clientX - rect.left,
             offsetY: clientY - rect.top
         };
-
-        focusWindow(windowId);
 
         e.preventDefault();
     }
@@ -233,22 +281,14 @@
     function doDrag(e) {
         if (!state.dragState) return;
 
-        const win = state.windows[state.dragState.windowId];
-        if (!win) return;
-
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-        // Calculate new position relative to desktop
-        const desktop = elements.desktop;
-        const desktopRect = desktop.getBoundingClientRect();
+        const win = state.windows[state.dragState.id];
+        const dRect = elements.desktop.getBoundingClientRect();
 
-        let x = clientX - desktopRect.left - state.dragState.offsetX;
-        let y = clientY - desktopRect.top - state.dragState.offsetY;
-
-        // Constrain within desktop bounds (with some padding)
-        x = Math.max(-100, Math.min(x, desktopRect.width - 100));
-        y = Math.max(0, Math.min(y, desktopRect.height - 50));
+        let x = clientX - dRect.left - state.dragState.offsetX;
+        let y = clientY - dRect.top - state.dragState.offsetY;
 
         win.position = { x, y };
         win.el.style.left = `${x}px`;
@@ -259,144 +299,81 @@
         state.dragState = null;
     }
 
-    // ==================== EVENT HANDLERS ====================
-    function handleDockClick(e) {
-        const item = e.target.closest('.dock-item[data-window]');
-        if (!item) return;
+    // ==================== INIT ====================
+    function init() {
+        cacheElements();
+        initWindows();
+        initQuickSettings();
+        updateTime();
+        setInterval(updateTime, 1000);
 
-        const windowId = item.dataset.window;
-        const win = state.windows[windowId];
-
-        if (win && win.isOpen) {
-            // If open and focused, minimize (close for now)
-            if (state.focusedWindow === windowId) {
-                closeWindow(windowId);
-            } else {
-                focusWindow(windowId);
-            }
-        } else {
-            openWindow(windowId);
-        }
-    }
-
-    function handleAppGridClick(e) {
-        const item = e.target.closest('.app-grid-item[data-window]');
-        if (!item) return;
-
-        const windowId = item.dataset.window;
-        openWindow(windowId);
-    }
-
-    function handleWindowClick(e) {
-        const windowEl = e.target.closest('.window');
-        if (!windowEl) return;
-
-        const windowId = windowEl.id;
-
-        // Check for close button click
-        if (e.target.closest('.close-btn')) {
-            closeWindow(windowId);
-            return;
-        }
-
-        // Check for header click (drag start)
-        const header = e.target.closest('.window-header');
-        if (header && !e.target.closest('.window-controls')) {
-            startDrag(e, windowId);
-            return;
-        }
-
-        // Otherwise just focus
-        focusWindow(windowId);
-    }
-
-    function handleKeydown(e) {
-        if (e.key === 'Escape') {
-            if (state.activitiesOpen) {
-                closeActivities();
-            } else if (state.systemMenuOpen) {
-                closeSystemMenu();
-            } else if (state.focusedWindow) {
-                closeWindow(state.focusedWindow);
-            }
-        }
-    }
-
-    function handleOutsideClick(e) {
-        // Close system menu if clicking outside
-        if (state.systemMenuOpen && !e.target.closest('.system-menu')) {
-            closeSystemMenu();
-        }
-
-        // Close activities if clicking on overlay background
-        if (state.activitiesOpen && e.target === elements.activitiesOverlay) {
-            closeActivities();
-        }
-    }
-
-    // ==================== INITIALIZATION ====================
-    function bindEvents() {
-        // Activities
+        // Bind main events
         elements.activitiesBtn.addEventListener('click', toggleActivities);
-
-        // System menu
         elements.systemTrayBtn.addEventListener('click', toggleSystemMenu);
+        elements.clockBtn.addEventListener('click', toggleCalendar);
 
-        // Wallpaper options
-        elements.wallpaperOptions.forEach(opt => {
-            opt.addEventListener('click', () => {
-                setWallpaper(opt.dataset.wallpaper);
+        // Dock clicks
+        document.querySelectorAll('.dock-item[data-window]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.window;
+                const win = state.windows[id];
+                if (win.isOpen && state.focusedWindow === id) {
+                    // closeWindow(id); // Ubuntu behavior: click to focus, click again does nothing or minimizes. Let's do nothing (keep focused).
+                    // Actually, many users expect minimize. 
+                    // Let's implement minimize check: if focused, minimize (close visually).
+                    // closeWindow(id);
+                } else {
+                    openWindow(id);
+                }
             });
         });
 
-        // Dock items
-        elements.dock.addEventListener('click', handleDockClick);
+        // App Grid clicks
+        document.querySelectorAll('.app-grid-item[data-window]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                openWindow(btn.dataset.window);
+                toggleActivities();
+            });
+        });
 
-        // App grid items
-        elements.activitiesOverlay.addEventListener('click', handleAppGridClick);
+        // Global clicks to close menus
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.topbar') && !e.target.closest('.calendar-dropdown') && !e.target.closest('.system-dropdown')) {
+                closeAllMenus();
+            }
+        });
 
-        // Window interactions
-        document.addEventListener('mousedown', handleWindowClick);
-        document.addEventListener('touchstart', handleWindowClick, { passive: false });
+        // Context Menu
+        document.addEventListener('contextmenu', (e) => {
+            // Show only on desktop background or unhandled areas
+            if (e.target === elements.desktop || e.target === document.body) {
+                e.preventDefault();
+                openContextMenu(e.clientX, e.clientY);
+            }
+        });
 
-        // Dragging
+        // Global keyboard
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAllMenus();
+        });
+
+        // Drag listeners
         document.addEventListener('mousemove', doDrag);
-        document.addEventListener('touchmove', doDrag, { passive: false });
         document.addEventListener('mouseup', endDrag);
+        document.addEventListener('touchmove', doDrag, { passive: false });
         document.addEventListener('touchend', endDrag);
 
-        // Keyboard
-        document.addEventListener('keydown', handleKeydown);
+        // Initial wallpaper
+        const savedWp = localStorage.getItem('termnh-wallpaper') || 'ubuntu';
+        setWallpaper(savedWp);
 
-        // Outside clicks
-        document.addEventListener('click', handleOutsideClick);
-
-        // Clock update
-        setInterval(updateClock, 1000);
+        console.log('Ubuntu Exact Fidelity initialized');
     }
 
-    function init() {
-        cacheElements();
-
-        // Initialize windows
-        elements.windows.forEach(win => initWindow(win));
-
-        // Load saved wallpaper
-        loadWallpaper();
-
-        // Initial clock update
-        updateClock();
-
-        // Bind all events
-        bindEvents();
-
-        console.log('Desktop UI initialized');
-    }
-
-    // Start when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
     }
+
 })();
